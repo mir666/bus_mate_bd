@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1030384039214",
+    "project_id": "busmatebd-59ade",
+    "storage_bucket": "busmatebd-59ade.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1030384039214:android:91fd5435785b61141376bf",
+        "android_client_info": {
+          "package_name": "com.mcode.bus_mate_bd"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASGe_RCOn9v-OJljqVUnpBeFdiwom9ito"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

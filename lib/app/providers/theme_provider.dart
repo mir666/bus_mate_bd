@@ -1,0 +1,46 @@
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class ThemeProvider extends ChangeNotifier {
+  final String _themeKey = 'themeMode';
+
+  ThemeMode _currentThemeMode = .system;
+
+  ThemeMode get currentThemeMode => _currentThemeMode;
+
+  Future<void> loadInitialThemeMode() async {
+    ThemeMode mode = await _getThemeMode();
+    _currentThemeMode = mode;
+  }
+
+  void changeThemeMode(ThemeMode mode){
+    if(currentThemeMode == mode) return;
+
+    _currentThemeMode = mode;
+    _saveThemeMode(mode.name);
+
+    notifyListeners();
+  }
+
+  Future<void> _saveThemeMode(String mode) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setString(_themeKey, mode);
+  }
+
+  Future<ThemeMode> _getThemeMode() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String saveThemeMode = sharedPreferences.getString(_themeKey) ?? '';
+    return getThemeModeFormString(saveThemeMode);
+  }
+
+  ThemeMode getThemeModeFormString(String v){
+    switch (v) {
+      case 'light':
+        return .light;
+      case 'dark':
+        return .dark;
+      default:
+        return .system;
+    }
+  }
+}
