@@ -16,4 +16,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get versionWithNumber => 'Version: 1.0.0';
+
+  @override
+  String get signUp => 'Sign Up';
+
+  @override
+  String get logIn => 'Log In';
+
+  @override
+  String get upperSearch => 'SEARCH';
+
+  @override
+  String get from => 'From';
+
+  @override
+  String get toDestination => 'To Destination';
+
+  @override
+  String get currentLocation => 'Current location';
+
+  @override
+  String get destination => 'Destination';
 }

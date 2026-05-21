@@ -1,5 +1,6 @@
 import 'package:bus_mate_bd/app/assetsPath.dart';
 import 'package:bus_mate_bd/app/extensions/language_extension.dart';
+import 'package:bus_mate_bd/features/home/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -12,6 +13,18 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    _moveToNextScreen();
+  }
+
+  Future<void> _moveToNextScreen() async {
+    await Future.delayed(Duration(seconds: 2));
+    Navigator.pushReplacementNamed(context, HomeScreen.name);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,25 +32,21 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           children: [
             Spacer(),
-            Image(image: AssetImage(AssetsPath.splashLogoImage), width: 120),
+            Image(image: AssetImage(AssetsPath.splashLogoImage),width: 120),
             SizedBox(height: 16),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 160),
+              padding: const EdgeInsets.symmetric(horizontal: 180),
               child: LinearProgressIndicator(
-                color: Color(0xFFFC8914),
                 borderRadius: BorderRadius.circular(20),
               ),
             ),
             Spacer(),
             Wrap(
               children: [
-                Text(
-                  context.localization.versionWithNumber,
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
-                ),
+                Text(context.localization.versionWithNumber,style: TextStyle(color: Colors.grey),)
               ],
             ),
-            SizedBox(height: 32),
+            SizedBox(height: 36),
           ],
         ),
       ),

@@ -3,4 +3,5 @@ class AssetsPath {
 
   static const String logoImage = '$_basicImageUrl/logo.png';
   static const String splashLogoImage = '$_basicImageUrl/splash_logo.png';
+  static const String bannerImage = '$_basicImageUrl/banner.png';
 }

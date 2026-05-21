@@ -115,6 +115,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Version: 1.0.0'**
   String get versionWithNumber;
+
+  /// No description provided for @signUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up'**
+  String get signUp;
+
+  /// No description provided for @logIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Log In'**
+  String get logIn;
+
+  /// No description provided for @upperSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'SEARCH'**
+  String get upperSearch;
+
+  /// No description provided for @from.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get from;
+
+  /// No description provided for @toDestination.
+  ///
+  /// In en, this message translates to:
+  /// **'To Destination'**
+  String get toDestination;
+
+  /// No description provided for @currentLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Current location'**
+  String get currentLocation;
+
+  /// No description provided for @destination.
+  ///
+  /// In en, this message translates to:
+  /// **'Destination'**
+  String get destination;
 }
 
 class _AppLocalizationsDelegate
