@@ -1,5 +1,6 @@
 import 'package:bus_mate_bd/app/app_routes.dart';
 import 'package:bus_mate_bd/app/app_theme.dart';
+import 'package:bus_mate_bd/app/controllers/controller_binding.dart';
 import 'package:bus_mate_bd/app/providers/language_provider.dart';
 import 'package:bus_mate_bd/app/providers/theme_provider.dart';
 import 'package:bus_mate_bd/l10n/app_localizations.dart';
@@ -46,6 +47,7 @@ class _BusMateBDState extends State<BusMateBD> {
                   GlobalCupertinoLocalizations.delegate,
                 ],
                 supportedLocales: [Locale('en'), Locale('bn')],
+                initialBinding: ControllerBinding(),
               );
             }
           );

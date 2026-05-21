@@ -1,0 +1,18 @@
+[
+  {
+    "bus_name": "Bihongo",
+    "start_point": "Mirpur 12",
+    "end_point": "Motijheel",
+    "is_ac": false,
+    "is_circular": false,
+    "stops": [
+      "Mirpur 12",
+      "Mirpur 10",
+      "Kazipara",
+      "Farmgate",
+      "Shahbag",
+      "Paltan",
+      "Motijheel"
+    ]
+  }
+]

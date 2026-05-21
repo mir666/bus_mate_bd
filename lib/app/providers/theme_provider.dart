@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ThemeProvider extends ChangeNotifier {
   final String _themeKey = 'themeMode';
 
-  ThemeMode _currentThemeMode = .system;
+  ThemeMode _currentThemeMode = ThemeMode.system;
 
   ThemeMode get currentThemeMode => _currentThemeMode;
 
@@ -36,11 +36,11 @@ class ThemeProvider extends ChangeNotifier {
   ThemeMode getThemeModeFormString(String v){
     switch (v) {
       case 'light':
-        return .light;
+        return ThemeMode.light;
       case 'dark':
-        return .dark;
+        return ThemeMode.dark;
       default:
-        return .system;
+        return ThemeMode.system;
     }
   }
 }
