@@ -31,4 +31,19 @@ class BusRouteModel {
     required this.isCircular,
     required this.stops,
   });
+
+  factory BusRouteModel.fromJson(
+      Map<String, dynamic> json,
+      ) {
+    return BusRouteModel(
+      busName: json['bus_name'],
+      startPoint: json['start_point'],
+      endPoint: json['end_point'],
+      isAc: json['is_ac'],
+      isCircular: json['is_circular'],
+      stops: List<String>.from(
+        json['stops'],
+      ),
+    );
+  }
 }

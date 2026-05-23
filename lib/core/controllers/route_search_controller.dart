@@ -3,7 +3,7 @@ import 'package:bus_mate_bd/data/models/bus_route_model.dart';
 import 'package:get/get.dart';
 
 
-class SearchController extends GetxController {
+class RouteSearchController extends GetxController {
 
   RxList<BusRouteModel> routes =
       <BusRouteModel>[].obs;

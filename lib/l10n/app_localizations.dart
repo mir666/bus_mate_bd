@@ -116,23 +116,11 @@ abstract class AppLocalizations {
   /// **'Version: 1.0.0'**
   String get versionWithNumber;
 
-  /// No description provided for @signUp.
+  /// No description provided for @search.
   ///
   /// In en, this message translates to:
-  /// **'Sign Up'**
-  String get signUp;
-
-  /// No description provided for @logIn.
-  ///
-  /// In en, this message translates to:
-  /// **'Log In'**
-  String get logIn;
-
-  /// No description provided for @upperSearch.
-  ///
-  /// In en, this message translates to:
-  /// **'SEARCH'**
-  String get upperSearch;
+  /// **'Search'**
+  String get search;
 
   /// No description provided for @from.
   ///
@@ -157,6 +145,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Destination'**
   String get destination;
+
+  /// No description provided for @goToYourDestination.
+  ///
+  /// In en, this message translates to:
+  /// **'Go To Your Destination'**
+  String get goToYourDestination;
 }
 
 class _AppLocalizationsDelegate

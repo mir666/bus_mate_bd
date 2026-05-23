@@ -2,34 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageProvider extends ChangeNotifier {
+
   final String _localeKey = 'locale';
 
-  Locale _currentLocale = Locale('en');
+  Locale _currentLocale = const Locale('en');
 
   Locale get currentLocale => _currentLocale;
 
   Future<void> loadInitialLanguage() async {
-    Locale locale = await _getLocale();
-    _currentLocale = locale;
-  }
 
-  void changeLocale(Locale newLocale){
-    if(currentLocale == newLocale) return;
-
-    _currentLocale = newLocale;
-    _saveLocale(_currentLocale.languageCode);
+    _currentLocale = await _getLocale();
 
     notifyListeners();
   }
 
-  Future<void> _saveLocale(String local) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.setString(_localeKey, local);
+  Future<void> changeLocale(Locale newLocale) async {
+
+    if (_currentLocale == newLocale) {
+      return;
+    }
+
+    _currentLocale = newLocale;
+
+    notifyListeners();
+
+    await _saveLocale(newLocale.languageCode);
+  }
+
+  Future<void> _saveLocale(String locale) async {
+
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString(_localeKey, locale);
   }
 
   Future<Locale> _getLocale() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String saveLocale = sharedPreferences.getString(_localeKey) ?? 'en';
-    return Locale(saveLocale);
+
+    final prefs = await SharedPreferences.getInstance();
+
+    final savedLocale = prefs.getString(_localeKey) ?? 'en';
+
+    return Locale(savedLocale);
   }
 }

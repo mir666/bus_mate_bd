@@ -2,11 +2,10 @@
   "version": "ভার্সন",
   "versionNumber": "১.০.০",
   "versionWithNumber": "ভার্সনঃ ১.০.০",
-  "signUp": "সাইন আপ",
-  "logIn": "লগ ইন",
-  "upperSearch": "সার্চ",
+  "search": "সার্চ",
   "from": "থেকে",
   "toDestination": "যেখানে যাবেন",
   "currentLocation": "বর্তমান জায়গা",
-  "destination": "যেখানে যাবেন"
+  "destination": "যেখানে যাবেন",
+  "goToYourDestination": "আপনার গন্তব্যে পৌঁছান"
 }

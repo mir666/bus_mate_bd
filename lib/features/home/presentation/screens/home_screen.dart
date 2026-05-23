@@ -1,5 +1,9 @@
 import 'package:bus_mate_bd/app/extensions/language_extension.dart';
+import 'package:bus_mate_bd/core/controllers/route_search_controller.dart';
+import 'package:bus_mate_bd/features/common/presentation/widgets/language_selector.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,6 +15,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  final fromController = TextEditingController();
+
+  final toController = TextEditingController();
+
+  final searchController = Get.find<RouteSearchController>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +38,12 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.notifications_active)),
+          const Padding(
+            padding: EdgeInsets.only(
+              right: 12,
+            ),
+            child: LanguageSelector(),
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -46,94 +62,164 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: Column(
                 children: [
+
                   Text(
-                    context.localization.upperSearch,
-                    style: TextStyle(
+                    context.localization.goToYourDestination,
+                    style: const TextStyle(
                       fontSize: 24,
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
+
                   Padding(
                     padding: const EdgeInsets.all(24),
-                    child: Row(
+                    child: Column(
                       children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                context.localization.from,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Container(
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                    hintText: context.localization.currentLocation,
-                                    hintStyle: TextStyle(
-                                      color: Colors.grey,
-                                    ),
-                                    border: InputBorder.none,
-                                    contentPadding: EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 14,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 16),
 
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                context.localization.toDestination,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Container(
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                    hintText: context.localization.destination,
-                                    hintStyle: TextStyle(
-                                      color: Colors.grey,
-                                    ),
-                                    border: InputBorder.none,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 14,
-                                    ),
-                                    suffixIcon: Icon(
-                                      Icons.location_on_outlined,
-                                      color: Colors.grey.shade600,
+                        Row(
+                          children: [
+
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+
+                                  Text(
+                                    context.localization.from,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight:
+                                      FontWeight.w600,
                                     ),
                                   ),
-                                ),
+
+                                  const SizedBox(height: 10),
+
+                                  Container(
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius:
+                                      BorderRadius.circular(10),
+                                    ),
+                                    child: TextField(
+                                      controller: fromController,
+                                      decoration: InputDecoration(
+                                        hintText:
+                                        context.localization
+                                            .currentLocation,
+                                        hintStyle: const TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                        border: InputBorder.none,
+                                        contentPadding:
+                                        const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 14,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
+
+                            const SizedBox(width: 16),
+
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+
+                                  Text(
+                                    context.localization
+                                        .toDestination,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight:
+                                      FontWeight.w600,
+                                    ),
+                                  ),
+
+                                  const SizedBox(height: 10),
+
+                                  Container(
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius:
+                                      BorderRadius.circular(10),
+                                    ),
+                                    child: TextField(
+                                      controller: toController,
+                                      decoration: InputDecoration(
+                                        hintText:
+                                        context.localization
+                                            .destination,
+                                        hintStyle: const TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                        border: InputBorder.none,
+                                        contentPadding:
+                                        const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 14,
+                                        ),
+                                        suffixIcon: Icon(
+                                          Icons.location_on_outlined,
+                                          color:
+                                          Colors.grey.shade600,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 24),
+
+                        SizedBox(
+                          width: double.infinity,
+                          height: 52,
+                          child: ElevatedButton.icon(
+
+                            onPressed: () {
+
+                              searchController.search(
+                                fromController.text,
+                                toController.text,
+                              );
+
+                            },
+
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              foregroundColor:
+                              const Color(0xFF304791),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.circular(12),
+                              ),
+                            ),
+
+                            icon: const Icon(Icons.search),
+
+                            label: Text(
+                              context.localization.search,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -141,6 +227,98 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
+            ),
+
+            const SizedBox(height: 20),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+              ),
+
+              child: Obx(() {
+
+                final routes = searchController.routes;
+
+                if (routes.isEmpty) {
+
+                  return const Center(
+                    child: Text(
+                      'No Route Found',
+                    ),
+                  );
+                }
+
+                return ListView.builder(
+
+                  shrinkWrap: true,
+
+                  physics:
+                  const NeverScrollableScrollPhysics(),
+
+                  itemCount: routes.length,
+
+                  itemBuilder: (context, index) {
+
+                    final route = routes[index];
+
+                    return Card(
+
+                      margin:
+                      const EdgeInsets.only(
+                        bottom: 12,
+                      ),
+
+                      shape:
+                      RoundedRectangleBorder(
+                        borderRadius:
+                        BorderRadius.circular(16),
+                      ),
+
+                      child: ListTile(
+
+                        contentPadding:
+                        const EdgeInsets.all(16),
+
+                        leading: CircleAvatar(
+                          backgroundColor:
+                          const Color(0xFF304791),
+
+                          child: const Icon(
+                            Icons.directions_bus,
+                            color: Colors.white,
+                          ),
+                        ),
+
+                        title: Text(
+                          route.busName,
+                          style: const TextStyle(
+                            fontWeight:
+                            FontWeight.w600,
+                            fontSize: 18,
+                          ),
+                        ),
+
+                        subtitle: Padding(
+                          padding:
+                          const EdgeInsets.only(
+                            top: 6,
+                          ),
+
+                          child: Text(
+                            '${route.startPoint} → ${route.endPoint}',
+                          ),
+                        ),
+
+                        trailing: const Icon(
+                          Icons.arrow_forward_ios,
+                          size: 18,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }),
             ),
           ],
         ),

@@ -18,13 +18,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get versionWithNumber => 'Version: 1.0.0';
 
   @override
-  String get signUp => 'Sign Up';
-
-  @override
-  String get logIn => 'Log In';
-
-  @override
-  String get upperSearch => 'SEARCH';
+  String get search => 'Search';
 
   @override
   String get from => 'From';
@@ -37,4 +31,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get destination => 'Destination';
+
+  @override
+  String get goToYourDestination => 'Go To Your Destination';
 }

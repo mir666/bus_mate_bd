@@ -1,6 +1,6 @@
 import 'package:bus_mate_bd/app/assetsPath.dart';
 import 'package:bus_mate_bd/app/extensions/language_extension.dart';
-import 'package:bus_mate_bd/features/home/presentation/screens/home_screen.dart';
+import 'package:bus_mate_bd/features/common/presentation/screens/bottom_main_nav_bar_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _moveToNextScreen() async {
     await Future.delayed(Duration(seconds: 2));
-    Navigator.pushReplacementNamed(context, HomeScreen.name);
+    Navigator.pushReplacementNamed(context, BottomMainNavBarScreen.name);
   }
 
   @override

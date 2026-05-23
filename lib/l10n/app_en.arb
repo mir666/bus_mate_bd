@@ -2,11 +2,10 @@
   "version": "Version",
   "versionNumber": "1.0.0",
   "versionWithNumber": "Version: 1.0.0",
-  "signUp": "Sign Up",
-  "logIn": "Log In",
-  "upperSearch": "SEARCH",
+  "search": "Search",
   "from": "From",
   "toDestination": "To Destination",
   "currentLocation": "Current location",
-  "destination": "Destination"
+  "destination": "Destination",
+  "goToYourDestination": "Go To Your Destination"
 }

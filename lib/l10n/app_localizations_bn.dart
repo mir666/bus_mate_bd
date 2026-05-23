@@ -18,13 +18,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get versionWithNumber => 'ভার্সনঃ ১.০.০';
 
   @override
-  String get signUp => 'সাইন আপ';
-
-  @override
-  String get logIn => 'লগ ইন';
-
-  @override
-  String get upperSearch => 'সার্চ';
+  String get search => 'সার্চ';
 
   @override
   String get from => 'থেকে';
@@ -37,4 +31,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get destination => 'যেখানে যাবেন';
+
+  @override
+  String get goToYourDestination => 'আপনার গন্তব্যে পৌঁছান';
 }
