@@ -2,7 +2,6 @@ import 'package:bus_mate_bd/data/models/bus_route_model.dart';
 import 'package:flutter/material.dart';
 
 class BusDetailsScreen extends StatelessWidget {
-
   final BusRouteModel bus;
 
   static const String name = '/bus-details';
@@ -15,10 +14,19 @@ class BusDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
+
+      backgroundColor:
+      isDark ? const Color(0xFF0F172A) : const Color(0xFFF6F7FB),
 
       appBar: AppBar(
         title: Text(bus.busName),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: isDark ? Colors.white : Colors.black,
       ),
 
       body: SingleChildScrollView(
@@ -30,12 +38,24 @@ class BusDetailsScreen extends StatelessWidget {
 
           children: [
 
+            // 🔥 HERO CARD
             Container(
-              padding: const EdgeInsets.all(16),
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
 
               decoration: BoxDecoration(
-                color: Colors.blue.shade50,
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(
+                  colors: isDark
+                      ? [
+                    const Color(0xFF1E293B),
+                    const Color(0xFF0F172A),
+                  ]
+                      : [
+                    const Color(0xFF4F46E5),
+                    const Color(0xFF3B82F6),
+                  ],
+                ),
               ),
 
               child: Column(
@@ -45,42 +65,35 @@ class BusDetailsScreen extends StatelessWidget {
                   Text(
                     bus.busName,
                     style: const TextStyle(
-                      fontSize: 24,
+                      fontSize: 26,
                       fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  Text(
-                    'From: ${bus.startPoint}',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-
-                  Text(
-                    'To: ${bus.endPoint}',
-                    style: const TextStyle(fontSize: 16),
                   ),
 
                   const SizedBox(height: 10),
 
+                  Text(
+                    "${bus.startPoint} → ${bus.endPoint}",
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 16,
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
                   Row(
                     children: [
 
-                      Chip(
-                        label: Text(
-                          bus.isAc ? 'AC' : 'Non AC',
-                        ),
+                      _chip(
+                        bus.isAc ? "AC" : "Non AC",
                       ),
 
                       const SizedBox(width: 10),
 
-                      Chip(
-                        label: Text(
-                          bus.isCircular
-                              ? 'Circular'
-                              : 'Non Circular',
-                        ),
+                      _chip(
+                        bus.isCircular ? "Circular" : "One Way",
                       ),
                     ],
                   ),
@@ -90,66 +103,109 @@ class BusDetailsScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            const Text(
-              'Bus Stops',
+            // TITLE
+            Text(
+              "Bus Stops",
               style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                color: isDark ? Colors.white : Colors.black,
               ),
             ),
 
             const SizedBox(height: 16),
 
-            ListView.builder(
+            // 🚏 TIMELINE LIST
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: isDark ? const Color(0xFF1E293B) : Colors.white,
+                borderRadius: BorderRadius.circular(16),
+              ),
 
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
+              child: ListView.builder(
 
-              itemCount: bus.stops.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
 
-              itemBuilder: (context, index) {
+                itemCount: bus.stops.length,
 
-                return Row(
+                itemBuilder: (context, index) {
 
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  final isLast = index == bus.stops.length - 1;
 
-                  children: [
+                  return Row(
 
-                    Column(
-                      children: [
+                    crossAxisAlignment: CrossAxisAlignment.start,
 
-                        const Icon(
-                          Icons.location_on,
-                          color: Colors.red,
-                        ),
+                    children: [
 
-                        if (index != bus.stops.length - 1)
+                      Column(
+                        children: [
+
                           Container(
-                            width: 2,
-                            height: 40,
-                            color: Colors.grey.shade400,
+                            width: 14,
+                            height: 14,
+                            decoration: const BoxDecoration(
+                              color: Colors.blueAccent,
+                              shape: BoxShape.circle,
+                            ),
                           ),
-                      ],
-                    ),
 
-                    const SizedBox(width: 12),
+                          if (!isLast)
+                            Container(
+                              width: 2,
+                              height: 40,
+                              color: Colors.blueAccent.withOpacity(0.3),
+                            ),
+                        ],
+                      ),
 
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: Text(
-                          bus.stops[index],
-                          style: const TextStyle(
-                            fontSize: 16,
+                      const SizedBox(width: 12),
+
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Text(
+                            bus.stops[index],
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: isDark
+                                  ? Colors.grey.shade300
+                                  : Colors.grey.shade800,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                );
-              },
+                    ],
+                  );
+                },
+              ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  // 🔥 CHIP WIDGET
+  Widget _chip(String text) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: 6,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
