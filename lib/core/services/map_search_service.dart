@@ -1,26 +1,38 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:latlong2/latlong.dart';
+import 'package:bus_mate_bd/data/models/location_search_model.dart';
+import 'package:dio/dio.dart';
 
-class SearchService {
-  static Future<List<Map<String, dynamic>>> searchPlace(String query) async {
-    final url = Uri.parse(
-      "https://nominatim.openstreetmap.org/search?q=$query&format=json&limit=5",
+
+class MapSearchService {
+
+  static final Dio _dio = Dio();
+
+  static Future<List<LocationSearchModel>>
+  searchLocation(String query) async {
+
+    if (query.trim().isEmpty) {
+      return [];
+    }
+
+    final response = await _dio.get(
+      'https://nominatim.openstreetmap.org/search',
+      queryParameters: {
+        'q': '$query, Dhaka',
+        'format': 'json',
+        'limit': 10,
+      },
+      options: Options(
+        headers: {
+          'User-Agent': 'bus_mate_bd',
+        },
+      ),
     );
 
-    final res = await http.get(url, headers: {
-      "User-Agent": "bus_mate_bd_app"
-    });
+    final data = response.data as List;
 
-    final data = jsonDecode(res.body);
-
-    return List<Map<String, dynamic>>.from(data);
-  }
-
-  static LatLng toLatLng(Map item) {
-    return LatLng(
-      double.parse(item['lat']),
-      double.parse(item['lon']),
-    );
+    return data
+        .map(
+          (e) =>
+          LocationSearchModel.fromJson(e),
+    ).toList();
   }
 }
