@@ -12,6 +12,7 @@ class BusController extends GetxController {
 
   RxBool isLoading = false.obs;
 
+
   @override
   void onInit() {
     loadRoutes();
