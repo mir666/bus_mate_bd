@@ -1,3 +1,4 @@
+import 'package:bus_mate_bd/data/models/bus_route_model.dart';
 import 'package:bus_mate_bd/features/auth/presentation/screens/splash_screen.dart';
 import 'package:bus_mate_bd/features/bus/presentation/screens/bus_details_screen.dart';
 import 'package:bus_mate_bd/features/bus/presentation/screens/bus_list_screen.dart';
@@ -27,7 +28,8 @@ class AppRoutes {
     } else if(settings.name == SettingsScreen.name){
       widget = const SettingsScreen();
     } else if(settings.name == BusDetailsScreen.name){
-      widget = const BusDetailsScreen();
+      final bus = settings.arguments as BusRouteModel;
+      widget = BusDetailsScreen(bus: bus);
     }
 
     return MaterialPageRoute(builder: (ctx) => widget);

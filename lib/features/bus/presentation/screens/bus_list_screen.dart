@@ -1,96 +1,90 @@
 import 'package:bus_mate_bd/data/models/bus_route_model.dart';
-import 'package:bus_mate_bd/features/bus/controllers/bus_controller.dart';
+import 'package:bus_mate_bd/features/bus/presentation/screens/bus_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-class BusListScreen extends StatefulWidget {
-
+class BusListScreen extends StatelessWidget {
   const BusListScreen({super.key});
 
   static const String name = '/bus-list';
 
   @override
-  State<BusListScreen> createState() => _BusListScreenState();
-}
-
-class _BusListScreenState extends State<BusListScreen> {
-  final BusController controller =
-  Get.put(BusController());
-
-  @override
   Widget build(BuildContext context) {
+
+    final box = Hive.box<BusRouteModel>('busBox');
 
     return Scaffold(
 
       appBar: AppBar(
-        title: const Text('All Bus Routes'),
+        title: const Text('Bus List'),
       ),
 
-      body: Obx(() {
+      body: ValueListenableBuilder(
 
-        if (controller.isLoading.value) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+        valueListenable: box.listenable(),
 
-        if (controller.busRoutes.isEmpty) {
-          return const Center(
-            child: Text('No Routes Found'),
-          );
-        }
+        builder: (context, Box<BusRouteModel> box, _) {
 
-        return ListView.builder(
+          if (box.isEmpty) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
-          itemCount:
-          controller.busRoutes.length,
+          final buses = box.values.toList();
 
-          itemBuilder: (context, index) {
+          return ListView.builder(
 
-            final BusRouteModel bus =
-            controller.busRoutes[index];
+            itemCount: buses.length,
 
-            return Card(
+            itemBuilder: (context, index) {
 
-              margin: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 6,
-              ),
+              final bus = buses[index];
 
-              child: ListTile(
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
 
-                leading: CircleAvatar(
-                  child: Text(
-                    bus.busName[0],
+                child: Card(
+
+                  elevation: 2,
+
+                  child: ListTile(
+
+                    leading: CircleAvatar(
+                      child: Icon(Icons.directions_bus),
+                    ),
+
+                    title: Text(
+                      bus.busName,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    subtitle: Text(
+                      '${bus.startPoint} → ${bus.endPoint}',
+                    ),
+
+                    trailing: const Icon(Icons.arrow_forward_ios),
+
+                    onTap: () {
+
+                      Get.to(
+                            () => BusDetailsScreen(bus: bus),
+                      );
+
+                    },
                   ),
                 ),
-
-                title: Text(
-                  bus.busName,
-                ),
-
-                subtitle: Text(
-                  '${bus.startPoint} → ${bus.endPoint}',
-                ),
-
-                trailing: bus.isAc
-                    ? const Icon(
-                  Icons.ac_unit,
-                )
-                    : null,
-
-                onTap: () {
-
-                  Get.toNamed(
-                    '/bus-details',
-                    arguments: bus,
-                  );
-                },
-              ),
-            );
-          },
-        );
-      }),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

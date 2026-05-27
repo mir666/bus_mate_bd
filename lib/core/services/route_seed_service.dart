@@ -10,9 +10,7 @@ class RouteSeedService {
   static Future<void> seedRoutes() async {
 
     final box =
-    Hive.box<BusRouteModel>(
-      'routes',
-    );
+    Hive.box<BusRouteModel>('busBox');
 
     if (box.isNotEmpty) return;
 
