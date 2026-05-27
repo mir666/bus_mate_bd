@@ -7,5 +7,18 @@
   "toDestination": "To Destination",
   "currentLocation": "Current location",
   "destination": "Destination",
-  "goToYourDestination": "Go To Your Destination"
+  "goToYourDestination": "Go To Your Destination",
+  "settings": "Settings",
+  "appearance": "Appearance",
+  "language": "Language",
+  "systemDefault": "System Default",
+  "lightMode": "Light Mode",
+  "darkMode": "Dark Mode",
+  "appLanguage": "App Language",
+  "more": "More",
+  "favoriteRoutes": "Favorite Routes",
+  "manageSavedRoutes": "Manage your saved routes",
+  "notifications": "Notifications",
+  "busAlerts": "Bus alerts & updates",
+  "aboutApp": "About App"
 }

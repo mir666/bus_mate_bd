@@ -34,4 +34,43 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get goToYourDestination => 'Go To Your Destination';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get appearance => 'Appearance';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get systemDefault => 'System Default';
+
+  @override
+  String get lightMode => 'Light Mode';
+
+  @override
+  String get darkMode => 'Dark Mode';
+
+  @override
+  String get appLanguage => 'App Language';
+
+  @override
+  String get more => 'More';
+
+  @override
+  String get favoriteRoutes => 'Favorite Routes';
+
+  @override
+  String get manageSavedRoutes => 'Manage your saved routes';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get busAlerts => 'Bus alerts & updates';
+
+  @override
+  String get aboutApp => 'About App';
 }

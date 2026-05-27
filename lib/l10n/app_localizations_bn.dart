@@ -34,4 +34,43 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get goToYourDestination => 'আপনার গন্তব্যে পৌঁছান';
+
+  @override
+  String get settings => 'সেটিংস';
+
+  @override
+  String get appearance => 'অ্যাপিয়ারেন্স';
+
+  @override
+  String get language => 'ভাষা';
+
+  @override
+  String get systemDefault => 'সিস্টেম ডিফল্ট';
+
+  @override
+  String get lightMode => 'লাইট মোড';
+
+  @override
+  String get darkMode => 'ডার্ক মোড';
+
+  @override
+  String get appLanguage => 'অ্যাপ ভাষা';
+
+  @override
+  String get more => 'আরও';
+
+  @override
+  String get favoriteRoutes => 'ফেভারিট রুট';
+
+  @override
+  String get manageSavedRoutes => 'সংরক্ষিত রুট ম্যানেজ করুন';
+
+  @override
+  String get notifications => 'নোটিফিকেশন';
+
+  @override
+  String get busAlerts => 'বাস এলার্ট ও আপডেট';
+
+  @override
+  String get aboutApp => 'অ্যাপ সম্পর্কে';
 }

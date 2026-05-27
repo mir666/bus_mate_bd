@@ -151,6 +151,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Go To Your Destination'**
   String get goToYourDestination;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @appearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearance;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @systemDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'System Default'**
+  String get systemDefault;
+
+  /// No description provided for @lightMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Light Mode'**
+  String get lightMode;
+
+  /// No description provided for @darkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get darkMode;
+
+  /// No description provided for @appLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'App Language'**
+  String get appLanguage;
+
+  /// No description provided for @more.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get more;
+
+  /// No description provided for @favoriteRoutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite Routes'**
+  String get favoriteRoutes;
+
+  /// No description provided for @manageSavedRoutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your saved routes'**
+  String get manageSavedRoutes;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @busAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Bus alerts & updates'**
+  String get busAlerts;
+
+  /// No description provided for @aboutApp.
+  ///
+  /// In en, this message translates to:
+  /// **'About App'**
+  String get aboutApp;
 }
 
 class _AppLocalizationsDelegate
