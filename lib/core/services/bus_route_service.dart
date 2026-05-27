@@ -1,24 +1,18 @@
 import 'dart:convert';
-
 import 'package:bus_mate_bd/data/models/bus_route_model.dart';
 import 'package:flutter/services.dart';
 
-
 class BusRouteService {
 
-  static Future<List<BusRouteModel>> loadRoutes() async {
+  Future<List<BusRouteModel>> loadRoutes() async {
 
     final jsonString =
-    await rootBundle.loadString(
-      'assets/data/bus_routes.json',
-    );
+    await rootBundle.loadString('assets/data/routes.json');
 
-    final data = jsonDecode(jsonString);
+    final data = jsonDecode(jsonString) as List;
 
-    return List<BusRouteModel>.from(
-      data.map(
-            (e) => BusRouteModel.fromJson(e),
-      ),
-    );
+    return data
+        .map((e) => BusRouteModel.fromJson(e))
+        .toList();
   }
 }

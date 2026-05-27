@@ -28,10 +28,12 @@ class _BottomMainNavBarScreenState extends State<BottomMainNavBarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Consumer<MainNavContainerProvider>(
       builder: (context, nav, _) {
         return Scaffold(
           extendBody: true, // important for floating effect
+
 
           body: _screens[nav.selectedIndex],
 
@@ -42,7 +44,7 @@ class _BottomMainNavBarScreenState extends State<BottomMainNavBarScreen> {
               bottom: 22,
             ),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: isDark ? Color(0xFF0F172A) : Color(0xFFF6F7FB),
               borderRadius: BorderRadius.circular(24),
               boxShadow: [
                 BoxShadow(

@@ -1,6 +1,9 @@
 import 'package:bus_mate_bd/app/extensions/language_extension.dart';
 import 'package:bus_mate_bd/core/controllers/route_search_controller.dart';
+import 'package:bus_mate_bd/features/bus/presentation/screens/bus_details_screen.dart';
 import 'package:bus_mate_bd/features/common/presentation/widgets/language_selector.dart';
+import 'package:bus_mate_bd/features/home/controllers/carousel_controller.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -21,6 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final toController = TextEditingController();
 
   final searchController = Get.find<RouteSearchController>();
+
+  final carouselController = Get.put(BusCarouselController());
 
   @override
   Widget build(BuildContext context) {
@@ -230,6 +235,197 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             const SizedBox(height: 20),
+
+            Obx(() {
+
+              if (carouselController.routes.isEmpty) {
+                return const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(20),
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+
+              return CarouselSlider.builder(
+
+                itemCount: carouselController.routes.length,
+
+                options: CarouselOptions(
+                  height: MediaQuery.of(context).size.height * 0.24,
+                  autoPlay: true,
+                  enlargeCenterPage: true,
+                  viewportFraction: 0.88,
+                ),
+
+                itemBuilder: (context, index, realIndex) {
+
+                  final bus = carouselController.routes[index];
+
+                  return GestureDetector(
+
+                    onTap: () {
+
+                      Get.toNamed(
+                        BusDetailsScreen.name,
+                        arguments: bus,
+                      );
+
+                    },
+
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+
+                        final width = constraints.maxWidth;
+                        final height = constraints.maxHeight;
+
+                        return Container(
+
+                          width: width,
+                          height: height,
+
+                          margin: const EdgeInsets.symmetric(horizontal: 6),
+
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(18),
+                            gradient: const LinearGradient(
+                              colors: [
+                                Color(0xFF304791),
+                                Color(0xFF516ECD),
+                              ],
+                            ),
+                          ),
+
+                          child: Padding(
+                            padding: EdgeInsets.all(width * 0.04),
+
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+
+                                /// TOP SECTION
+                                Row(
+                                  children: [
+
+                                    Expanded(
+                                      child: FittedBox(
+                                        alignment: Alignment.centerLeft,
+                                        fit: BoxFit.scaleDown,
+                                        child: Text(
+                                          bus.busName,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: width * 0.06,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(width: 8),
+
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: width * 0.025,
+                                        vertical: height * 0.02,
+                                      ),
+
+                                      decoration: BoxDecoration(
+                                        color: bus.isAc
+                                            ? Colors.green
+                                            : Colors.orange,
+                                        borderRadius:
+                                        BorderRadius.circular(12),
+                                      ),
+
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: Text(
+                                          bus.isAc ? "AC" : "NON-AC",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: width * 0.03,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                SizedBox(height: height * 0.04),
+
+                                /// ROUTE
+                                Expanded(
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                      "${bus.startPoint} → ${bus.endPoint}",
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: Colors.white70,
+                                        fontSize: width * 0.038,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                /// STOPS
+                                Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    "Stops: ${bus.stops.take(3).join(' → ')}",
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: width * 0.032,
+                                    ),
+                                  ),
+                                ),
+
+                                SizedBox(height: height * 0.02),
+
+                                /// BUTTON
+                                Align(
+                                  alignment: Alignment.bottomRight,
+
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: width * 0.035,
+                                        vertical: height * 0.018,
+                                      ),
+
+                                      decoration: BoxDecoration(
+                                        color: Colors.white.withOpacity(0.15),
+                                        borderRadius:
+                                        BorderRadius.circular(10),
+                                      ),
+
+                                      child: Text(
+                                        "View Details",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: width * 0.03,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              );
+            }),
 
           ],
         ),
