@@ -6,6 +6,7 @@ import 'package:bus_mate_bd/features/common/presentation/screens/bottom_main_nav
 import 'package:bus_mate_bd/features/favorite/presentation/screen/favorite_screen.dart';
 import 'package:bus_mate_bd/features/home/presentation/screens/home_screen.dart';
 import 'package:bus_mate_bd/features/map/presentation/screens/map_screen.dart';
+import 'package:bus_mate_bd/features/notification/presentation/screens/notification_screen.dart';
 import 'package:bus_mate_bd/features/settings/presentation/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +25,9 @@ class AppRoutes {
     } else if(settings.name == BusListScreen.name){
       widget = const BusListScreen();
     } else if(settings.name == FavoriteScreen.name){
-      widget = const FavoriteScreen();
+      widget = FavoriteScreen();
+    } else if(settings.name == NotificationScreen.name){
+      widget = const NotificationScreen();
     } else if(settings.name == SettingsScreen.name){
       widget = const SettingsScreen();
     } else if(settings.name == BusDetailsScreen.name){

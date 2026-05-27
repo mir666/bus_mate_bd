@@ -2,6 +2,8 @@ import 'package:bus_mate_bd/app/extensions/language_extension.dart';
 import 'package:bus_mate_bd/core/controllers/route_search_controller.dart';
 import 'package:bus_mate_bd/features/bus/presentation/screens/bus_details_screen.dart';
 import 'package:bus_mate_bd/features/common/presentation/widgets/language_selector.dart';
+import 'package:bus_mate_bd/features/favorite/controllers/favorite_controller.dart';
+import 'package:bus_mate_bd/features/favorite/presentation/screen/favorite_screen.dart';
 import 'package:bus_mate_bd/features/home/controllers/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +44,12 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         elevation: 0,
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.notifications_active)),
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, FavoriteScreen.name);
+            },
+            icon: Icon(Icons.favorite_border_outlined),
+          ),
           const Padding(
             padding: EdgeInsets.only(
               right: 12,
@@ -427,9 +434,378 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             }),
 
+            const SizedBox(height: 24),
+
+            Obx(() {
+
+              final routes = carouselController.routes;
+
+              final mirpurBuses = routes.where(
+                    (e) =>
+                    e.stops.any(
+                          (s) => s.toLowerCase().contains('mirpur'),
+                    ),
+              ).toList();
+
+              final uttaraBuses = routes.where(
+                    (e) =>
+                    e.stops.any(
+                          (s) => s.toLowerCase().contains('uttara'),
+                    ),
+              ).toList();
+
+              final motijheelBuses = routes.where(
+                    (e) =>
+                    e.stops.any(
+                          (s) => s.toLowerCase().contains('motijheel'),
+                    ),
+              ).toList();
+
+              final farmgateBuses = routes.where(
+                    (e) =>
+                    e.stops.any(
+                          (s) => s.toLowerCase().contains('farmgate'),
+                    ),
+              ).toList();
+
+              return Column(
+                children: [
+
+                  if (mirpurBuses.isNotEmpty)
+                    buildAreaSection(
+                      title: "Mirpur Routes",
+                      buses: mirpurBuses,
+                      context: context,
+                    ),
+
+                  if (uttaraBuses.isNotEmpty)
+                    buildAreaSection(
+                      title: "Uttara Routes",
+                      buses: uttaraBuses,
+                      context: context,
+                    ),
+
+                  if (motijheelBuses.isNotEmpty)
+                    buildAreaSection(
+                      title: "Motijheel Routes",
+                      buses: motijheelBuses,
+                      context: context,
+                    ),
+
+                  if (farmgateBuses.isNotEmpty)
+                    buildAreaSection(
+                      title: "Farmgate Routes",
+                      buses: farmgateBuses,
+                      context: context,
+                    ),
+                ],
+              );
+            }),
           ],
         ),
       ),
     );
   }
+}
+Widget buildAreaSection({
+  required BuildContext context,
+  required String title,
+  required List buses,
+}) {
+
+  final screenWidth = MediaQuery.of(context).size.width;
+
+  final favoriteController =
+  Get.find<FavoriteController>();
+
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+
+      /// TITLE
+      Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: screenWidth * 0.04,
+        ),
+
+        child: Text(
+          title,
+
+          style: TextStyle(
+            fontSize: screenWidth * 0.05,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF1E293B),
+          ),
+        ),
+      ),
+
+      SizedBox(height: screenWidth * 0.03),
+
+      SizedBox(
+
+        /// SAFE HEIGHT
+        height: screenWidth * 0.42,
+
+        child: ListView.separated(
+
+          scrollDirection: Axis.horizontal,
+
+          padding: EdgeInsets.symmetric(
+            horizontal: screenWidth * 0.04,
+          ),
+
+          itemCount: buses.length,
+
+          separatorBuilder: (_, _) =>
+              SizedBox(width: screenWidth * 0.03),
+
+          itemBuilder: (context, index) {
+
+            final bus = buses[index];
+
+            return GestureDetector(
+
+              onTap: () {
+
+                Get.toNamed(
+                  BusDetailsScreen.name,
+                  arguments: bus,
+                );
+
+              },
+
+              child: Container(
+
+                width: screenWidth * 0.58,
+
+                padding: EdgeInsets.all(
+                  screenWidth * 0.032,
+                ),
+
+                decoration: BoxDecoration(
+
+                  borderRadius: BorderRadius.circular(22),
+
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+
+                    colors: [
+                      Color(0xFF0F172A),
+                      Color(0xFF1E40AF),
+                    ],
+                  ),
+
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.12),
+                      blurRadius: 10,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                ),
+
+                child: LayoutBuilder(
+
+                  builder: (context, constraints) {
+
+                    final cardWidth = constraints.maxWidth;
+                    final cardHeight = constraints.maxHeight;
+
+                    return Column(
+                      crossAxisAlignment:
+                      CrossAxisAlignment.start,
+
+                      children: [
+
+                        /// TOP ROW
+                        Row(
+                          children: [
+
+                            Expanded(
+                              child: Text(
+                                bus.busName,
+
+                                maxLines: 1,
+
+                                overflow:
+                                TextOverflow.ellipsis,
+
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize:
+                                  cardWidth * 0.08,
+                                  fontWeight:
+                                  FontWeight.bold,
+                                ),
+                              ),
+                            ),
+
+                            SizedBox(width: 6),
+
+                            /// FAVORITE
+                            Obx(() {
+
+                              final isFavorite =
+                              favoriteController
+                                  .favoriteBuses
+                                  .contains(bus);
+
+                              return GestureDetector(
+
+                                onTap: () {
+
+                                  favoriteController
+                                      .toggleFavorite(bus);
+
+                                },
+
+                                child: AnimatedContainer(
+
+                                  duration:
+                                  const Duration(
+                                      milliseconds: 250),
+
+                                  padding:
+                                  EdgeInsets.all(
+                                    cardWidth * 0.025,
+                                  ),
+
+                                  decoration: BoxDecoration(
+
+                                    color: isFavorite
+                                        ? Colors.red
+                                        : Colors.white
+                                        .withValues(
+                                      alpha: 0.15,
+                                    ),
+
+                                    shape: BoxShape.circle,
+                                  ),
+
+                                  child: Icon(
+
+                                    isFavorite
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
+
+                                    color: Colors.white,
+
+                                    size: cardWidth * 0.06,
+                                  ),
+                                ),
+                              );
+                            }),
+                          ],
+                        ),
+
+                        SizedBox(height: cardHeight * 0.06),
+
+                        /// ROUTE
+                        Expanded(
+
+                          child: Text(
+
+                            "${bus.startPoint} → ${bus.endPoint}",
+
+                            maxLines: 2,
+
+                            overflow:
+                            TextOverflow.ellipsis,
+
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize:
+                              cardWidth * 0.05,
+                              height: 1.3,
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(height: cardHeight * 0.03),
+
+                        /// BOTTOM
+                        Row(
+
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+
+                          children: [
+
+                            Flexible(
+                              child: Container(
+
+                                padding:
+                                EdgeInsets.symmetric(
+                                  horizontal:
+                                  cardWidth * 0.04,
+                                  vertical:
+                                  cardHeight * 0.03,
+                                ),
+
+                                decoration: BoxDecoration(
+                                  color: bus.isAc
+                                      ? Colors.green
+                                      : Colors.orange,
+
+                                  borderRadius:
+                                  BorderRadius.circular(10),
+                                ),
+
+                                child: FittedBox(
+
+                                  fit: BoxFit.scaleDown,
+
+                                  child: Text(
+
+                                    bus.isAc
+                                        ? "AC"
+                                        : "NON-AC",
+
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize:
+                                      cardWidth * 0.04,
+                                      fontWeight:
+                                      FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            SizedBox(width: 8),
+
+                            Flexible(
+                              child: Text(
+
+                                "${bus.stops.length} Stops",
+
+                                maxLines: 1,
+
+                                overflow:
+                                TextOverflow.ellipsis,
+
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize:
+                                  cardWidth * 0.04,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+
+      SizedBox(height: screenWidth * 0.06),
+    ],
+  );
 }

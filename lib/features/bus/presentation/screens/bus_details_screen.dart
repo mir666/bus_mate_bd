@@ -18,8 +18,7 @@ class BusDetailsScreen extends StatelessWidget {
 
     return Scaffold(
 
-      backgroundColor:
-      isDark ? Color(0xFF0F172A) : Color(0xFFF6F7FB),
+      backgroundColor: isDark ? Color(0xFF0F172A) : Color(0xFFF6F7FB),
 
       appBar: AppBar(
         title: Text(bus.busName),
