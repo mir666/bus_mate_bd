@@ -252,7 +252,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: carouselController.routes.length,
 
                 options: CarouselOptions(
-                  height: MediaQuery.of(context).size.height * 0.24,
+                  height: MediaQuery.of(context).size.height * 0.18,
                   autoPlay: true,
                   enlargeCenterPage: true,
                   viewportFraction: 0.88,
@@ -384,7 +384,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
 
-                                SizedBox(height: height * 0.02),
+                                SizedBox(height: height * 0.008),
 
                                 /// BUTTON
                                 Align(
@@ -400,7 +400,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
 
                                       decoration: BoxDecoration(
-                                        color: Colors.white.withOpacity(0.15),
+                                        color: Colors.white.withValues(alpha: 0.15),
                                         borderRadius:
                                         BorderRadius.circular(10),
                                       ),
