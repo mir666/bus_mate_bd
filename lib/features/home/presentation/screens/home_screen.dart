@@ -1,13 +1,13 @@
 import 'package:bus_mate_bd/app/extensions/language_extension.dart';
-import 'package:bus_mate_bd/core/controllers/route_search_controller.dart';
+import 'package:bus_mate_bd/data/models/bus_route_model.dart';
 import 'package:bus_mate_bd/features/bus/presentation/screens/bus_details_screen.dart';
 import 'package:bus_mate_bd/features/common/presentation/widgets/language_selector.dart';
-import 'package:bus_mate_bd/features/favorite/controllers/favorite_controller.dart';
 import 'package:bus_mate_bd/features/favorite/presentation/screen/favorite_screen.dart';
-import 'package:bus_mate_bd/features/home/controllers/carousel_controller.dart';
+import 'package:bus_mate_bd/features/favorite/providers/favorite_provider.dart';
+import 'package:bus_mate_bd/features/home/providers/home_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,155 +23,110 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final toController = TextEditingController();
 
-  final searchController = Get.find<RouteSearchController>();
-
-  final carouselController = Get.put(BusCarouselController());
-
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      drawer: Drawer(),
+      drawer: const Drawer(),
+
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
+
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF304791), Color(0xFF516ECD)],
             ),
           ),
         ),
+
         elevation: 0,
+
         actions: [
           IconButton(
             onPressed: () {
               Navigator.pushNamed(context, FavoriteScreen.name);
             },
-            icon: Icon(Icons.favorite_border_outlined),
+
+            icon: const Icon(Icons.favorite_border_outlined),
           ),
+
           const Padding(
             padding: EdgeInsets.only(right: 12),
+
             child: LanguageSelector(),
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              width: double.maxFinite,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color(0xFF304791), Color(0xFF516ECD)],
-                ),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                ),
-              ),
-              child: Column(
-                children: [
-                  Text(
-                    context.localization.goToYourDestination,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
+
+      body: Consumer<HomeProvider>(
+        builder: (context, homeProvider, child) {
+          final routes = homeProvider.routes;
+
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                /// TOP SEARCH SECTION
+                Container(
+                  width: double.infinity,
+
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Color(0xFF304791), Color(0xFF516ECD)],
+                    ),
+
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(24),
+
+                      bottomRight: Radius.circular(24),
                     ),
                   ),
 
-                  Padding(
+                  child: Padding(
                     padding: const EdgeInsets.all(24),
+
                     child: Column(
                       children: [
+                        Text(
+                          context.localization.goToYourDestination,
+
+                          style: const TextStyle(
+                            fontSize: 24,
+
+                            color: Colors.white,
+
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+
+                        SizedBox(height: screenWidth * 0.06),
+
                         Row(
                           children: [
                             Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    context.localization.from,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
+                              child: _buildTextField(
+                                title: context.localization.from,
 
-                                  const SizedBox(height: 10),
+                                hint: context.localization.currentLocation,
 
-                                  Container(
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: TextField(
-                                      controller: fromController,
-                                      decoration: InputDecoration(
-                                        hintText: context
-                                            .localization
-                                            .currentLocation,
-                                        hintStyle: const TextStyle(
-                                          color: Colors.grey,
-                                        ),
-                                        border: InputBorder.none,
-                                        contentPadding: EdgeInsets.symmetric(
-                                              horizontal: 12,
-                                              vertical: 14,
-                                            ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                controller: fromController,
                               ),
                             ),
 
                             const SizedBox(width: 16),
 
                             Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    context.localization.toDestination,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
+                              child: _buildTextField(
+                                title: context.localization.toDestination,
 
-                                  const SizedBox(height: 10),
+                                hint: context.localization.destination,
 
-                                  Container(
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: TextField(
-                                      controller: toController,
-                                      decoration: InputDecoration(
-                                        hintText:
-                                            context.localization.destination,
-                                        hintStyle: const TextStyle(
-                                          color: Colors.grey,
-                                        ),
-                                        border: InputBorder.none,
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                              horizontal: 12,
-                                              vertical: 14,
-                                            ),
-                                        suffixIcon: Icon(
-                                          Icons.location_on_outlined,
-                                          color: Colors.grey.shade600,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                controller: toController,
+
+                                suffixIcon: Icons.location_on_outlined,
                               ),
                             ),
                           ],
@@ -181,21 +136,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         SizedBox(
                           width: double.infinity,
+
                           height: 52,
+
                           child: ElevatedButton.icon(
                             onPressed: () {
-                              searchController.search(
+                              homeProvider.searchRoute(
                                 fromController.text,
+
                                 toController.text,
                               );
                             },
 
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
+
                               foregroundColor: const Color(0xFF304791),
-                              elevation: 0,
+
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(14),
                               ),
                             ),
 
@@ -203,9 +162,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
                             label: Text(
                               context.localization.search,
+
                               style: const TextStyle(
+                                fontWeight: FontWeight.w700,
+
                                 fontSize: 18,
-                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
@@ -213,274 +174,161 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            Obx(() {
-              if (carouselController.routes.isEmpty) {
-                return Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 2),
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              }
-
-              return CarouselSlider.builder(
-                itemCount: carouselController.routes.length,
-
-                options: CarouselOptions(
-                  height: MediaQuery.of(context).size.height * 0.16,
-                  autoPlay: true,
-                  enlargeCenterPage: true,
-                  viewportFraction: 0.80,
                 ),
 
-                itemBuilder: (context, index, realIndex) {
-                  final bus = carouselController.routes[index];
+                const SizedBox(height: 24),
 
-                  return GestureDetector(
-                    onTap: () {
-                      Get.toNamed(BusDetailsScreen.name, arguments: bus);
+                /// CAROUSEL
+                if (routes.isEmpty)
+                  const Center(child: CircularProgressIndicator())
+                else
+                  CarouselSlider.builder(
+                    itemCount: routes.length,
+
+                    options: CarouselOptions(
+                      height: screenWidth * 0.42,
+
+                      autoPlay: true,
+
+                      enlargeCenterPage: true,
+
+                      viewportFraction: 0.82,
+                    ),
+
+                    itemBuilder: (context, index, realIndex) {
+                      final bus = routes[index];
+
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+
+                            MaterialPageRoute(
+                              builder: (_) => BusDetailsScreen(bus: bus),
+                            ),
+                          );
+                        },
+
+                        child: _buildCarouselCard(bus),
+                      );
                     },
+                  ),
 
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        final width = constraints.maxWidth;
-                        final height = constraints.maxHeight;
+                const SizedBox(height: 28),
 
-                        return Container(
-                          width: width,
-                          height: height,
+                /// AREA SECTIONS
+                _buildAreaSection(
+                  context: context,
 
-                          margin: const EdgeInsets.symmetric(horizontal: 6),
+                  title: "Mirpur Routes",
 
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(18),
-                            gradient: const LinearGradient(
-                              colors: [Color(0xFF304791), Color(0xFF516ECD)],
-                            ),
-                          ),
+                  buses: routes
+                      .where(
+                        (e) => e.stops.any(
+                          (s) => s.toLowerCase().contains('mirpur'),
+                        ),
+                      )
+                      .toList(),
+                ),
 
-                          child: Padding(
-                            padding: EdgeInsets.all(width * 0.04),
+                _buildAreaSection(
+                  context: context,
 
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                /// TOP SECTION
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: FittedBox(
-                                        alignment: Alignment.centerLeft,
-                                        fit: BoxFit.scaleDown,
-                                        child: Text(
-                                          bus.busName,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: width * 0.08,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                  title: "Uttara Routes",
 
-                                    const SizedBox(width: 8),
-
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: width * 0.025,
-                                        vertical: height * 0.02,
-                                      ),
-
-                                      decoration: BoxDecoration(
-                                        color: bus.isAc
-                                            ? Colors.green
-                                            : Colors.orange,
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-
-                                      child: FittedBox(
-                                        fit: BoxFit.scaleDown,
-                                        child: Text(
-                                          bus.isAc ? "AC" : "NON-AC",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: width * 0.03,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                                SizedBox(height: height * 0.04),
-
-                                /// ROUTE
-                                Expanded(
-                                  child: Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
-                                      "${bus.startPoint} → ${bus.endPoint}",
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: Colors.white70,
-                                        fontSize: width * 0.038,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-
-                                /// STOPS
-                                Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    "Stops: ${bus.stops.take(3).join(' → ')}",
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      color: Colors.white70,
-                                      fontSize: width * 0.032,
-                                    ),
-                                  ),
-                                ),
-
-                                SizedBox(height: height * 0.008),
-
-                                /// BUTTON
-                                Align(
-                                  alignment: Alignment.bottomRight,
-
-                                  child: FittedBox(
-                                    fit: BoxFit.scaleDown,
-
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: width * 0.035,
-                                        vertical: height * 0.018,
-                                      ),
-
-                                      decoration: BoxDecoration(
-                                        color: Colors.white.withValues(
-                                          alpha: 0.15,
-                                        ),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-
-                                      child: Text(
-                                        "View Details",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: width * 0.03,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
-              );
-            }),
-
-            const SizedBox(height: 24),
-
-            Obx(() {
-              final routes = carouselController.routes;
-
-              final mirpurBuses = routes
-                  .where(
-                    (e) =>
-                        e.stops.any((s) => s.toLowerCase().contains('mirpur')),
-                  )
-                  .toList();
-
-              final uttaraBuses = routes
-                  .where(
-                    (e) =>
-                        e.stops.any((s) => s.toLowerCase().contains('uttara')),
-                  )
-                  .toList();
-
-              final motijheelBuses = routes
-                  .where(
-                    (e) => e.stops.any(
-                      (s) => s.toLowerCase().contains('motijheel'),
-                    ),
-                  )
-                  .toList();
-
-              final farmgateBuses = routes
-                  .where(
-                    (e) => e.stops.any(
-                      (s) => s.toLowerCase().contains('farmgate'),
-                    ),
-                  )
-                  .toList();
-
-              return Column(
-                children: [
-                  if (mirpurBuses.isNotEmpty)
-                    buildAreaSection(
-                      title: "Mirpur Routes",
-                      buses: mirpurBuses,
-                      context: context,
-                    ),
-
-                  if (uttaraBuses.isNotEmpty)
-                    buildAreaSection(
-                      title: "Uttara Routes",
-                      buses: uttaraBuses,
-                      context: context,
-                    ),
-
-                  if (motijheelBuses.isNotEmpty)
-                    buildAreaSection(
-                      title: "Motijheel Routes",
-                      buses: motijheelBuses,
-                      context: context,
-                    ),
-
-                  if (farmgateBuses.isNotEmpty)
-                    buildAreaSection(
-                      title: "Farmgate Routes",
-                      buses: farmgateBuses,
-                      context: context,
-                    ),
-                ],
-              );
-            }),
-          ],
-        ),
+                  buses: routes
+                      .where(
+                        (e) => e.stops.any(
+                          (s) => s.toLowerCase().contains('uttara'),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ],
+            ),
+          );
+        },
       ),
+    );
+  }
+
+  Widget _buildTextField({
+    required String title,
+
+    required String hint,
+
+    required TextEditingController controller,
+
+    IconData? suffixIcon,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+
+      children: [
+        Text(
+          title,
+
+          style: const TextStyle(
+            color: Colors.white,
+
+            fontSize: 18,
+
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+
+        const SizedBox(height: 10),
+
+        Container(
+          height: 52,
+
+          decoration: BoxDecoration(
+            color: Colors.white,
+
+            borderRadius: BorderRadius.circular(14),
+          ),
+
+          child: TextField(
+            controller: controller,
+
+            decoration: InputDecoration(
+              hintText: hint,
+
+              border: InputBorder.none,
+
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 14,
+
+                vertical: 14,
+              ),
+
+              suffixIcon: suffixIcon != null ? Icon(suffixIcon) : null,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
 
-Widget buildAreaSection({
+/// AREA SECTION
+Widget _buildAreaSection({
   required BuildContext context,
+
   required String title,
-  required List buses,
+
+  required List<BusRouteModel> buses,
 }) {
   final screenWidth = MediaQuery.of(context).size.width;
 
-  final favoriteController = Get.find<FavoriteController>();
+  if (buses.isEmpty) {
+    return const SizedBox();
+  }
 
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
+
     children: [
-      /// TITLE
       Padding(
         padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
 
@@ -489,8 +337,8 @@ Widget buildAreaSection({
 
           style: TextStyle(
             fontSize: screenWidth * 0.05,
+
             fontWeight: FontWeight.bold,
-            color: const Color(0xFF1E293B),
           ),
         ),
       ),
@@ -498,8 +346,7 @@ Widget buildAreaSection({
       SizedBox(height: screenWidth * 0.03),
 
       SizedBox(
-        /// SAFE HEIGHT
-        height: screenWidth * 0.32,
+        height: screenWidth * 0.34,
 
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
@@ -508,191 +355,209 @@ Widget buildAreaSection({
 
           itemCount: buses.length,
 
-          separatorBuilder: (_, _) => SizedBox(width: screenWidth * 0.03),
+          separatorBuilder: (_, __) => const SizedBox(width: 12),
 
           itemBuilder: (context, index) {
             final bus = buses[index];
 
-            return GestureDetector(
-              onTap: () {
-                Get.toNamed(BusDetailsScreen.name, arguments: bus);
-              },
-
-              child: Container(
-                width: screenWidth * 0.40,
-
-                padding: EdgeInsets.all(screenWidth * 0.032),
-                margin: const EdgeInsets.only(bottom: 12),
-
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(22),
-
-                  color: Colors.white,
-
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.12),
-                      blurRadius: 10,
-                      offset: Offset(0, 5),
-                    ),
-                  ],
-                ),
-
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    final cardWidth = constraints.maxWidth;
-                    final cardHeight = constraints.maxHeight;
-
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-
-                      children: [
-                        /// TOP ROW
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                bus.busName,
-
-                                maxLines: 1,
-
-                                overflow: TextOverflow.ellipsis,
-
-                                style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: cardWidth * 0.10,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-
-                            SizedBox(width: 6),
-
-                            /// FAVORITE
-                            Obx(() {
-                              final isFavorite = favoriteController
-                                  .favoriteBuses
-                                  .contains(bus);
-
-                              return GestureDetector(
-                                onTap: () {
-                                  favoriteController.toggleFavorite(bus);
-                                },
-
-                                child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 250),
-
-                                  padding: EdgeInsets.all(cardWidth * 0.025),
-
-                                  decoration: BoxDecoration(
-                                    color: isFavorite
-                                        ? Colors.red
-                                        : Colors.black.withValues(alpha: 0.15),
-
-                                    shape: BoxShape.circle,
-                                  ),
-
-                                  child: Icon(
-                                    isFavorite
-                                        ? Icons.favorite
-                                        : Icons.favorite_border,
-
-                                    color: Colors.white,
-
-                                    size: cardWidth * 0.10,
-                                  ),
-                                ),
-                              );
-                            }),
-                          ],
-                        ),
-
-                        SizedBox(height: cardHeight * 0.06),
-
-                        /// ROUTE
-                        Expanded(
-                          child: Text(
-                            "${bus.startPoint} → ${bus.endPoint}",
-
-                            maxLines: 2,
-
-                            overflow: TextOverflow.ellipsis,
-
-                            style: TextStyle(
-                              color: Colors.black54,
-                              fontSize: cardWidth * 0.09,
-                              height: 1.3,
-                            ),
-                          ),
-                        ),
-
-                        SizedBox(height: cardHeight * 0.03),
-
-                        /// BOTTOM
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                          children: [
-                            Flexible(
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: cardWidth * 0.04,
-                                  vertical: cardHeight * 0.03,
-                                ),
-
-                                decoration: BoxDecoration(
-                                  color: bus.isAc
-                                      ? Colors.green
-                                      : Colors.orange,
-
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-
-                                child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-
-                                  child: Text(
-                                    bus.isAc ? "AC" : "NON-AC",
-
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: cardWidth * 0.07,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-
-                            SizedBox(width: 8),
-
-                            Flexible(
-                              child: Text(
-                                "${bus.stops.length} Stops",
-
-                                maxLines: 1,
-
-                                overflow: TextOverflow.ellipsis,
-
-                                style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: cardWidth * 0.08,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            );
+            return _BusCard(bus: bus);
           },
         ),
       ),
 
-      SizedBox(height: screenWidth * 0.06),
+      const SizedBox(height: 24),
     ],
+  );
+}
+
+/// BUS CARD
+class _BusCard extends StatelessWidget {
+  final BusRouteModel bus;
+
+  const _BusCard({required this.bus});
+
+  @override
+  Widget build(BuildContext context) {
+    final favoriteProvider = context.watch<FavoriteProvider>();
+
+    final isFavorite = favoriteProvider.isFavorite(bus);
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+
+          MaterialPageRoute(builder: (_) => BusDetailsScreen(bus: bus)),
+        );
+      },
+
+      child: Container(
+        width: 170,
+
+        padding: const EdgeInsets.all(14),
+
+        decoration: BoxDecoration(
+          color: Colors.white,
+
+          borderRadius: BorderRadius.circular(20),
+
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+
+              blurRadius: 10,
+
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    bus.busName,
+
+                    maxLines: 1,
+
+                    overflow: TextOverflow.ellipsis,
+
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+
+                GestureDetector(
+                  onTap: () {
+                    favoriteProvider.toggleFavorite(bus);
+                  },
+
+                  child: Icon(
+                    isFavorite ? Icons.favorite : Icons.favorite_border,
+
+                    color: isFavorite ? Colors.red : Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 10),
+
+            Text(
+              "${bus.startPoint} → ${bus.endPoint}",
+
+              maxLines: 2,
+
+              overflow: TextOverflow.ellipsis,
+            ),
+
+            const Spacer(),
+
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+
+              decoration: BoxDecoration(
+                color: bus.isAc ? Colors.green : Colors.orange,
+
+                borderRadius: BorderRadius.circular(10),
+              ),
+
+              child: Text(
+                bus.isAc ? "AC" : "NON-AC",
+
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// CAROUSEL CARD
+Widget _buildCarouselCard(BusRouteModel bus) {
+  return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(20),
+
+      gradient: const LinearGradient(
+        colors: [Color(0xFF304791), Color(0xFF516ECD)],
+      ),
+    ),
+
+    child: Padding(
+      padding: const EdgeInsets.all(18),
+
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  bus.busName,
+
+                  style: const TextStyle(
+                    color: Colors.white,
+
+                    fontSize: 22,
+
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
+
+                decoration: BoxDecoration(
+                  color: bus.isAc ? Colors.green : Colors.orange,
+
+                  borderRadius: BorderRadius.circular(10),
+                ),
+
+                child: Text(
+                  bus.isAc ? "AC" : "NON-AC",
+
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 14),
+
+          Text(
+            "${bus.startPoint} → ${bus.endPoint}",
+
+            style: const TextStyle(color: Colors.white70),
+          ),
+
+          const Spacer(),
+
+          Text(
+            "Stops: ${bus.stops.take(3).join(' → ')}",
+
+            maxLines: 2,
+
+            overflow: TextOverflow.ellipsis,
+
+            style: const TextStyle(color: Colors.white70),
+          ),
+        ],
+      ),
+    ),
   );
 }

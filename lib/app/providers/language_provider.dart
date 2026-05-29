@@ -5,43 +5,32 @@ class LanguageProvider extends ChangeNotifier {
 
   final String _localeKey = 'locale';
 
-  Locale _currentLocale = Locale('bn');
+  Locale _currentLocale = Locale('en');
 
   Locale get currentLocale => _currentLocale;
 
   Future<void> loadInitialLanguage() async {
-
-    _currentLocale = await _getLocale();
-
+    Locale locale = await _getLocale();
+    _currentLocale = locale;
     notifyListeners();
   }
 
-  Future<void> changeLocale(Locale newLocale) async {
-
-    if (_currentLocale == newLocale) {
-      return;
-    }
+  void changeLocale(Locale newLocale){
+    if(_currentLocale == newLocale) return;
 
     _currentLocale = newLocale;
-
+    _saveLocale(_currentLocale.languageCode);
     notifyListeners();
-
-    await _saveLocale(newLocale.languageCode);
   }
 
-  Future<void> _saveLocale(String locale) async {
-
-    final prefs = await SharedPreferences.getInstance();
-
-    await prefs.setString(_localeKey, locale);
+  Future<void> _saveLocale(String local) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setString(_localeKey, local);
   }
 
   Future<Locale> _getLocale() async {
-
-    final prefs = await SharedPreferences.getInstance();
-
-    final savedLocale = prefs.getString(_localeKey) ?? 'en';
-
-    return Locale(savedLocale);
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String saveLocale = sharedPreferences.getString(_localeKey) ?? 'en';
+    return Locale(saveLocale);
   }
 }

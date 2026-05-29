@@ -16,10 +16,6 @@ dependencies:
 
   cupertino_icons: ^1.0.8
   firebase_core: ^4.9.0
-  get: ^4.7.3
-  flutter_localizations:
-    sdk: flutter
-  intl: ^0.20.2
   provider: ^6.1.5+1
   shared_preferences: ^2.5.5
   get_storage: ^2.1.1
@@ -35,6 +31,9 @@ dependencies:
   dio: ^5.9.2
   easy_debounce: ^2.0.3
   carousel_slider: ^5.1.2
+  intl: ^0.20.2
+  flutter_localizations:
+    sdk: flutter
 
 
 dev_dependencies:

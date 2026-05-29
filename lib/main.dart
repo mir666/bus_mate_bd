@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
-import 'core/services/route_seed_service.dart';
 import 'data/models/bus_route_model.dart';
 import 'data/models/stop_model.dart';
 import 'firebase_options.dart';
@@ -32,7 +31,6 @@ Future<void> main() async {
 
   await Hive.openBox<StopModel>('stops');
 
-  await RouteSeedService.seedRoutes();
   await FMTCObjectBoxBackend().initialise();
 
   await loadBusData();
