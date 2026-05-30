@@ -60,11 +60,10 @@ class HomeProvider extends ChangeNotifier {
   /// SEARCH ROUTE
   void searchRoute(String from, String to) {
     final fromQuery = from.toLowerCase().trim();
-
     final toQuery = to.toLowerCase().trim();
 
     if (fromQuery.isEmpty && toQuery.isEmpty) {
-      _searchResults = _routes;
+      _searchResults = List.from(_routes);
 
       notifyListeners();
 
@@ -72,14 +71,30 @@ class HomeProvider extends ChangeNotifier {
     }
 
     _searchResults = _routes.where((bus) {
-      final stops = bus.stops.map((e) => e.toLowerCase()).toList();
+      final stops = bus.stops
+          .map((e) => e.toLowerCase())
+          .toList();
 
-      final matchesFrom = stops.any((stop) => stop.contains(fromQuery));
+      final fromIndex = stops.indexWhere(
+            (stop) => stop.contains(fromQuery),
+      );
 
-      final matchesTo = stops.any((stop) => stop.contains(toQuery));
+      final toIndex = stops.indexWhere(
+            (stop) => stop.contains(toQuery),
+      );
 
-      return matchesFrom && matchesTo;
+      if (fromIndex == -1 || toIndex == -1) {
+        return false;
+      }
+
+      return fromIndex < toIndex;
     }).toList();
+
+    notifyListeners();
+  }
+
+  void clearSearch() {
+    _searchResults = List.from(_routes);
 
     notifyListeners();
   }

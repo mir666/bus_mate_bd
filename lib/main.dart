@@ -12,12 +12,9 @@ import 'data/models/stop_model.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await GetStorage.init();
 
@@ -35,20 +32,17 @@ Future<void> main() async {
 
   await loadBusData();
 
-
   runApp(const BusMateBD());
 }
 
 Future<void> loadBusData() async {
-
   final box = Hive.box<BusRouteModel>('busBox');
 
   if (box.isNotEmpty) {
     return;
   }
 
-  final jsonString =
-  await rootBundle.loadString('assets/data/bus_routes.json');
+  final jsonString = await rootBundle.loadString('assets/data/routes.json');
 
   final List data = jsonDecode(jsonString);
 

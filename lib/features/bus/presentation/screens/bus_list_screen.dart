@@ -1,7 +1,6 @@
 import 'package:bus_mate_bd/data/models/bus_route_model.dart';
 import 'package:bus_mate_bd/features/bus/presentation/screens/bus_details_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class BusListScreen extends StatefulWidget {
@@ -50,7 +49,7 @@ class _BusListScreenState extends State<BusListScreen> {
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withValues(alpha: 0.05),
                     blurRadius: 10,
                     offset: const Offset(0, 5),
                   ),
@@ -143,7 +142,12 @@ class _BusListScreenState extends State<BusListScreen> {
                         borderRadius: BorderRadius.circular(16),
 
                         onTap: () {
-                          Get.to(() => BusDetailsScreen(bus: bus));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => BusDetailsScreen(bus: bus),
+                            ),
+                          );
                         },
 
                         child: Container(
@@ -153,7 +157,7 @@ class _BusListScreenState extends State<BusListScreen> {
                             borderRadius: BorderRadius.circular(16),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.06),
+                                color: Colors.black.withValues(alpha: 0.06),
                                 blurRadius: 12,
                                 offset: const Offset(0, 6),
                               ),
@@ -170,7 +174,7 @@ class _BusListScreenState extends State<BusListScreen> {
                             leading: Container(
                               padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                color: Colors.blueAccent.withOpacity(0.15),
+                                color: Colors.blueAccent.withValues(alpha: 0.15),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: const Icon(

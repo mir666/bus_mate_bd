@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       body: Consumer<HomeProvider>(
         builder: (context, homeProvider, child) {
-          final routes = homeProvider.routes;
+          final routes = homeProvider.searchResults;
 
           return SingleChildScrollView(
             child: Column(
@@ -171,6 +171,23 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
+                        const SizedBox(height: 10),
+
+                        TextButton(
+                          onPressed: () {
+                            fromController.clear();
+                            toController.clear();
+
+                            homeProvider.clearSearch();
+                          },
+
+                          child: const Text(
+                            "Clear Search",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -179,19 +196,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 24),
 
                 /// CAROUSEL
-                if (routes.isEmpty)
-                  const Center(child: CircularProgressIndicator())
+                /// CAROUSEL
+                if (homeProvider.isLoading)
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                else if (routes.isEmpty)
+                  const Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Text(
+                      'No buses found',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  )
                 else
                   CarouselSlider.builder(
                     itemCount: routes.length,
 
                     options: CarouselOptions(
                       height: screenWidth * 0.42,
-
                       autoPlay: true,
-
                       enlargeCenterPage: true,
-
                       viewportFraction: 0.82,
                     ),
 
@@ -202,7 +227,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         onTap: () {
                           Navigator.push(
                             context,
-
                             MaterialPageRoute(
                               builder: (_) => BusDetailsScreen(bus: bus),
                             ),
