@@ -233,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         },
 
-                        child: _buildCarouselCard(bus),
+                        child: _buildCarouselCard(context, bus),
                       );
                     },
                   ),
@@ -379,7 +379,7 @@ Widget _buildAreaSection({
 
           itemCount: buses.length,
 
-          separatorBuilder: (_, __) => const SizedBox(width: 12),
+          separatorBuilder: (_, _) => const SizedBox(width: 12),
 
           itemBuilder: (context, index) {
             final bus = buses[index];
@@ -427,7 +427,7 @@ class _BusCard extends StatelessWidget {
 
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.06),
+              color: Colors.black.withValues(alpha: 0.06),
 
               blurRadius: 10,
 
@@ -507,78 +507,91 @@ class _BusCard extends StatelessWidget {
 }
 
 /// CAROUSEL CARD
-Widget _buildCarouselCard(BusRouteModel bus) {
+Widget _buildCarouselCard(
+    BuildContext context,
+    BusRouteModel bus,
+    ) {
+  final size = MediaQuery.of(context).size;
+  final isSmallDevice = size.height < 700;
+
+  final titleSize = isSmallDevice ? 18.0 : 22.0;
+  final subTextSize = isSmallDevice ? 12.0 : 14.0;
+
   return Container(
+    width: double.infinity,
+    height: isSmallDevice ? 160 : 190,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20),
-
       gradient: const LinearGradient(
         colors: [Color(0xFF304791), Color(0xFF516ECD)],
       ),
     ),
 
     child: Padding(
-      padding: const EdgeInsets.all(18),
+      padding: EdgeInsets.all(isSmallDevice ? 14 : 18),
 
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          /// TOP ROW
           Row(
             children: [
               Expanded(
                 child: Text(
                   bus.busName,
-
-                  style: const TextStyle(
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
                     color: Colors.white,
-
-                    fontSize: 22,
-
+                    fontSize: titleSize,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
 
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 5,
-                ),
+              const SizedBox(width: 8),
 
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isSmallDevice ? 8 : 10,
+                  vertical: isSmallDevice ? 3 : 5,
+                ),
                 decoration: BoxDecoration(
                   color: bus.isAc ? Colors.green : Colors.orange,
-
                   borderRadius: BorderRadius.circular(10),
                 ),
-
                 child: Text(
                   bus.isAc ? "AC" : "NON-AC",
-
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: subTextSize,
+                  ),
                 ),
               ),
             ],
           ),
 
-          const SizedBox(height: 14),
-
+          /// ROUTE
           Text(
             "${bus.startPoint} → ${bus.endPoint}",
-
-            style: const TextStyle(color: Colors.white70),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: Colors.white70,
+              fontSize: subTextSize,
+            ),
           ),
 
-          const Spacer(),
-
+          /// STOPS
           Text(
             "Stops: ${bus.stops.take(3).join(' → ')}",
-
             maxLines: 2,
-
             overflow: TextOverflow.ellipsis,
-
-            style: const TextStyle(color: Colors.white70),
+            style: TextStyle(
+              color: Colors.white70,
+              fontSize: subTextSize,
+            ),
           ),
         ],
       ),
