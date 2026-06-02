@@ -36,9 +36,17 @@ class _HomeScreenState extends State<HomeScreen> {
         iconTheme: const IconThemeData(color: Colors.white),
 
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFF304791), Color(0xFF516ECD)],
+              colors: isDark
+                  ? const [
+                Color(0xFF16213E),
+                Color(0xFF1F4068),
+              ]
+                  : const [
+                Color(0xFF304791),
+                Color(0xFF516ECD),
+              ],
             ),
           ),
         ),
@@ -55,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
 
           const Padding(
-            padding: EdgeInsets.only(right: 12),
+            padding: EdgeInsets.only(right: 10),
 
             child: LanguageSelector(),
           ),
@@ -73,9 +81,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 Container(
                   width: double.infinity,
 
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Color(0xFF304791), Color(0xFF516ECD)],
+                      colors: isDark
+                          ? const [
+                        Color(0xFF16213E),
+                        Color(0xFF1F4068),
+                      ]
+                          : const [
+                        Color(0xFF304791),
+                        Color(0xFF516ECD),
+                      ],
                     ),
 
                     borderRadius: BorderRadius.only(
@@ -195,7 +211,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 const SizedBox(height: 24),
 
-                /// CAROUSEL
                 /// CAROUSEL
                 if (homeProvider.isLoading)
                   const Center(
@@ -405,6 +420,7 @@ class _BusCard extends StatelessWidget {
     final favoriteProvider = context.watch<FavoriteProvider>();
 
     final isFavorite = favoriteProvider.isFavorite(bus);
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     return GestureDetector(
       onTap: () {
@@ -421,7 +437,7 @@ class _BusCard extends StatelessWidget {
         padding: const EdgeInsets.all(14),
 
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isDark ? const Color(0xFF252525) : Colors.white,
 
           borderRadius: BorderRadius.circular(20),
 
@@ -516,14 +532,23 @@ Widget _buildCarouselCard(
 
   final titleSize = isSmallDevice ? 18.0 : 22.0;
   final subTextSize = isSmallDevice ? 12.0 : 14.0;
+  final isDark = Theme.of(context).brightness == Brightness.dark;
 
   return Container(
     width: double.infinity,
     height: isSmallDevice ? 160 : 190,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20),
-      gradient: const LinearGradient(
-        colors: [Color(0xFF304791), Color(0xFF516ECD)],
+      gradient: LinearGradient(
+        colors: isDark
+            ? const [
+          Color(0xFF16213E),
+          Color(0xFF1F4068),
+        ]
+            : const [
+          Color(0xFF304791),
+          Color(0xFF516ECD),
+        ],
       ),
     ),
 
