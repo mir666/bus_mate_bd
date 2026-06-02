@@ -1,4 +1,5 @@
 import 'package:bus_mate_bd/app/extensions/language_extension.dart';
+import 'package:bus_mate_bd/app/providers/theme_provider.dart';
 import 'package:bus_mate_bd/data/models/bus_route_model.dart';
 import 'package:bus_mate_bd/features/bus/presentation/screens/bus_details_screen.dart';
 import 'package:bus_mate_bd/features/common/presentation/widgets/language_selector.dart';
@@ -28,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final screenWidth = MediaQuery.of(context).size.width;
+    final themeProvider = context.watch<ThemeProvider>();
 
     return Scaffold(
       drawer: const Drawer(),
@@ -39,14 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: isDark
-                  ? const [
-                Color(0xFF16213E),
-                Color(0xFF1F4068),
-              ]
-                  : const [
-                Color(0xFF304791),
-                Color(0xFF516ECD),
-              ],
+                  ? const [Color(0xFF16213E), Color(0xFF1F4068)]
+                  : const [Color(0xFF304791), Color(0xFF516ECD)],
             ),
           ),
         ),
@@ -67,6 +63,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
             child: LanguageSelector(),
           ),
+
+          IconButton(
+            onPressed: () {
+              themeProvider.changeThemeMode(
+                isDark ? ThemeMode.light : ThemeMode.dark,
+              );
+            },
+            icon: Icon(
+              isDark ? Icons.light_mode : Icons.dark_mode,
+              color: Colors.white,
+            ),
+          ),
         ],
       ),
 
@@ -84,14 +92,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: isDark
-                          ? const [
-                        Color(0xFF16213E),
-                        Color(0xFF1F4068),
-                      ]
-                          : const [
-                        Color(0xFF304791),
-                        Color(0xFF516ECD),
-                      ],
+                          ? const [Color(0xFF16213E), Color(0xFF1F4068)]
+                          : const [Color(0xFF304791), Color(0xFF516ECD)],
                     ),
 
                     borderRadius: BorderRadius.only(
@@ -199,9 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                           child: const Text(
                             "Clear Search",
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
                       ],
@@ -213,9 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 /// CAROUSEL
                 if (homeProvider.isLoading)
-                  const Center(
-                    child: CircularProgressIndicator(),
-                  )
+                  const Center(child: CircularProgressIndicator())
                 else if (routes.isEmpty)
                   const Padding(
                     padding: EdgeInsets.all(20),
@@ -523,10 +521,7 @@ class _BusCard extends StatelessWidget {
 }
 
 /// CAROUSEL CARD
-Widget _buildCarouselCard(
-    BuildContext context,
-    BusRouteModel bus,
-    ) {
+Widget _buildCarouselCard(BuildContext context, BusRouteModel bus) {
   final size = MediaQuery.of(context).size;
   final isSmallDevice = size.height < 700;
 
@@ -541,14 +536,8 @@ Widget _buildCarouselCard(
       borderRadius: BorderRadius.circular(20),
       gradient: LinearGradient(
         colors: isDark
-            ? const [
-          Color(0xFF16213E),
-          Color(0xFF1F4068),
-        ]
-            : const [
-          Color(0xFF304791),
-          Color(0xFF516ECD),
-        ],
+            ? const [Color(0xFF16213E), Color(0xFF1F4068)]
+            : const [Color(0xFF304791), Color(0xFF516ECD)],
       ),
     ),
 
@@ -588,10 +577,7 @@ Widget _buildCarouselCard(
                 ),
                 child: Text(
                   bus.isAc ? "AC" : "NON-AC",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: subTextSize,
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: subTextSize),
                 ),
               ),
             ],
@@ -602,10 +588,7 @@ Widget _buildCarouselCard(
             "${bus.startPoint} → ${bus.endPoint}",
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: Colors.white70,
-              fontSize: subTextSize,
-            ),
+            style: TextStyle(color: Colors.white70, fontSize: subTextSize),
           ),
 
           /// STOPS
@@ -613,10 +596,7 @@ Widget _buildCarouselCard(
             "Stops: ${bus.stops.take(3).join(' → ')}",
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: Colors.white70,
-              fontSize: subTextSize,
-            ),
+            style: TextStyle(color: Colors.white70, fontSize: subTextSize),
           ),
         ],
       ),
