@@ -5,7 +5,7 @@ class LanguageProvider extends ChangeNotifier {
 
   final String _localeKey = 'locale';
 
-  Locale _currentLocale = Locale('en');
+  Locale _currentLocale = Locale('bn');
 
   Locale get currentLocale => _currentLocale;
 
@@ -30,7 +30,7 @@ class LanguageProvider extends ChangeNotifier {
 
   Future<Locale> _getLocale() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String saveLocale = sharedPreferences.getString(_localeKey) ?? 'en';
+    String saveLocale = sharedPreferences.getString(_localeKey) ?? 'bn';
     return Locale(saveLocale);
   }
 }

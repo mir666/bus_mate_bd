@@ -229,6 +229,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'About App'**
   String get aboutApp;
+
+  /// No description provided for @bihongo.
+  ///
+  /// In en, this message translates to:
+  /// **'Bihongo'**
+  String get bihongo;
+
+  /// No description provided for @mirpur_12.
+  ///
+  /// In en, this message translates to:
+  /// **'Mirpur 12'**
+  String get mirpur_12;
+
+  /// No description provided for @mirpur_10.
+  ///
+  /// In en, this message translates to:
+  /// **'Mirpur 10'**
+  String get mirpur_10;
+
+  /// No description provided for @kazipara.
+  ///
+  /// In en, this message translates to:
+  /// **'Kazipara'**
+  String get kazipara;
+
+  /// No description provided for @farmgate.
+  ///
+  /// In en, this message translates to:
+  /// **'Farmgate'**
+  String get farmgate;
+
+  /// No description provided for @shahbag.
+  ///
+  /// In en, this message translates to:
+  /// **'Shahbag'**
+  String get shahbag;
+
+  /// No description provided for @paltan.
+  ///
+  /// In en, this message translates to:
+  /// **'Paltan'**
+  String get paltan;
+
+  /// No description provided for @motijheel.
+  ///
+  /// In en, this message translates to:
+  /// **'Motijheel'**
+  String get motijheel;
 }
 
 class _AppLocalizationsDelegate

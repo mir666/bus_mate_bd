@@ -73,4 +73,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutApp => 'About App';
+
+  @override
+  String get bihongo => 'Bihongo';
+
+  @override
+  String get mirpur_12 => 'Mirpur 12';
+
+  @override
+  String get mirpur_10 => 'Mirpur 10';
+
+  @override
+  String get kazipara => 'Kazipara';
+
+  @override
+  String get farmgate => 'Farmgate';
+
+  @override
+  String get shahbag => 'Shahbag';
+
+  @override
+  String get paltan => 'Paltan';
+
+  @override
+  String get motijheel => 'Motijheel';
 }

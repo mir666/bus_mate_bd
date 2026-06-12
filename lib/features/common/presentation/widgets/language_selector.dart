@@ -41,9 +41,7 @@ class LanguageSelector extends StatelessWidget {
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 value: languageProvider.currentLocale.languageCode,
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
+
                 isDense: true,
 
                 icon: const Icon(
@@ -53,7 +51,7 @@ class LanguageSelector extends StatelessWidget {
                 ),
 
                 dropdownColor:
-                  isDark ? const Color(0xFF252525) : Colors.white,
+                isDark ? const Color(0xFF252525) : Colors.white,
 
                 items: const [
                   DropdownMenuItem(

@@ -1,5 +1,7 @@
 import 'package:bus_mate_bd/data/models/bus_route_model.dart';
+import 'package:bus_mate_bd/features/favorite/providers/favorite_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BusDetailsScreen extends StatelessWidget {
   final BusRouteModel bus;
@@ -15,6 +17,9 @@ class BusDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final favoriteProvider = context.watch<FavoriteProvider>();
+
+    final isFavorite = favoriteProvider.isFavorite(bus);
 
     return Scaffold(
 
@@ -61,13 +66,32 @@ class BusDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-                  Text(
-                    bus.busName,
-                    style: const TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          bus.busName,
+                          style: const TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+
+                      IconButton(
+                        onPressed: () async {
+                          await favoriteProvider.toggleFavorite(bus);
+                        },
+                        icon: Icon(
+                          isFavorite
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: isFavorite ? Colors.red : Colors.white,
+                          size: 30,
+                        ),
+                      ),
+                    ],
                   ),
 
                   const SizedBox(height: 10),

@@ -73,4 +73,28 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get aboutApp => 'অ্যাপ সম্পর্কে';
+
+  @override
+  String get bihongo => 'বিহঙ্গ';
+
+  @override
+  String get mirpur_12 => 'মিরপুর ১২';
+
+  @override
+  String get mirpur_10 => 'মিরপুর ১০';
+
+  @override
+  String get kazipara => 'কাজীপাড়া';
+
+  @override
+  String get farmgate => 'ফার্মগেট';
+
+  @override
+  String get shahbag => 'শাহবাগ';
+
+  @override
+  String get paltan => 'পল্টন';
+
+  @override
+  String get motijheel => 'মতিঝিল';
 }

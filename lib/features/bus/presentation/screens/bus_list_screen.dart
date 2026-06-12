@@ -217,6 +217,7 @@ class _BusListScreenState extends State<BusListScreen> {
               },
             ),
           ),
+          SizedBox(height: 80),
         ],
       ),
     );

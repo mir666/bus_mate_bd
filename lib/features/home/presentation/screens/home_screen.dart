@@ -5,6 +5,7 @@ import 'package:bus_mate_bd/features/bus/presentation/screens/bus_details_screen
 import 'package:bus_mate_bd/features/common/presentation/widgets/language_selector.dart';
 import 'package:bus_mate_bd/features/favorite/presentation/screen/favorite_screen.dart';
 import 'package:bus_mate_bd/features/favorite/providers/favorite_provider.dart';
+import 'package:bus_mate_bd/features/home/presentation/widgets/app_drawer.dart';
 import 'package:bus_mate_bd/features/home/providers/home_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final themeProvider = context.watch<ThemeProvider>();
 
     return Scaffold(
-      drawer: const Drawer(),
+      drawer: AppDrawer(),
 
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
@@ -86,127 +87,11 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               children: [
                 /// TOP SEARCH SECTION
-                Container(
-                  width: double.infinity,
-
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: isDark
-                          ? const [Color(0xFF16213E), Color(0xFF1F4068)]
-                          : const [Color(0xFF304791), Color(0xFF516ECD)],
-                    ),
-
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(24),
-
-                      bottomRight: Radius.circular(24),
-                    ),
-                  ),
-
-                  child: Padding(
-                    padding: const EdgeInsets.all(24),
-
-                    child: Column(
-                      children: [
-                        Text(
-                          context.localization.goToYourDestination,
-
-                          style: const TextStyle(
-                            fontSize: 24,
-
-                            color: Colors.white,
-
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-
-                        SizedBox(height: screenWidth * 0.06),
-
-                        Row(
-                          children: [
-                            Expanded(
-                              child: _buildTextField(
-                                title: context.localization.from,
-
-                                hint: context.localization.currentLocation,
-
-                                controller: fromController,
-                              ),
-                            ),
-
-                            const SizedBox(width: 16),
-
-                            Expanded(
-                              child: _buildTextField(
-                                title: context.localization.toDestination,
-
-                                hint: context.localization.destination,
-
-                                controller: toController,
-
-                                suffixIcon: Icons.location_on_outlined,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 24),
-
-                        SizedBox(
-                          width: double.infinity,
-
-                          height: 52,
-
-                          child: ElevatedButton.icon(
-                            onPressed: () {
-                              homeProvider.searchRoute(
-                                fromController.text,
-
-                                toController.text,
-                              );
-                            },
-
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-
-                              foregroundColor: const Color(0xFF304791),
-
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(14),
-                              ),
-                            ),
-
-                            icon: const Icon(Icons.search),
-
-                            label: Text(
-                              context.localization.search,
-
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w700,
-
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-
-                        TextButton(
-                          onPressed: () {
-                            fromController.clear();
-                            toController.clear();
-
-                            homeProvider.clearSearch();
-                          },
-
-                          child: const Text(
-                            "Clear Search",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                _buildTopSearchSection(
+                  isDark,
+                  context,
+                  screenWidth,
+                  homeProvider,
                 ),
 
                 const SizedBox(height: 24),
@@ -257,12 +142,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 _buildAreaSection(
                   context: context,
 
-                  title: "Mirpur Routes",
+                  title: "Gulistan Routes",
 
                   buses: routes
                       .where(
                         (e) => e.stops.any(
-                          (s) => s.toLowerCase().contains('mirpur'),
+                          (s) => s.toLowerCase().contains('gulistan'),
                         ),
                       )
                       .toList(),
@@ -281,10 +166,289 @@ class _HomeScreenState extends State<HomeScreen> {
                       )
                       .toList(),
                 ),
+                _buildAreaSection(
+                  context: context,
+
+                  title: "Dhanmondi Routes",
+
+                  buses: routes
+                      .where(
+                        (e) => e.stops.any(
+                          (s) => s.toLowerCase().contains('dhanmondi'),
+                        ),
+                      )
+                      .toList(),
+                ),
+                _buildAreaSection(
+                  context: context,
+
+                  title: "Mirpur Routes",
+
+                  buses: routes
+                      .where(
+                        (e) => e.stops.any(
+                          (s) => s.toLowerCase().contains('mirpur'),
+                        ),
+                      )
+                      .toList(),
+                ),
+                _buildAreaSection(
+                  context: context,
+
+                  title: "Sadarghat Routes",
+
+                  buses: routes
+                      .where(
+                        (e) => e.stops.any(
+                          (s) => s.toLowerCase().contains('sadarghat'),
+                        ),
+                      )
+                      .toList(),
+                ),
+                _buildAreaSection(
+                  context: context,
+
+                  title: "Gabtoli Routes",
+
+                  buses: routes
+                      .where(
+                        (e) => e.stops.any(
+                          (s) => s.toLowerCase().contains('gabtoli'),
+                        ),
+                      )
+                      .toList(),
+                ),
+                _buildAreaSection(
+                  context: context,
+
+                  title: "Shahbagh Routes",
+
+                  buses: routes
+                      .where(
+                        (e) => e.stops.any(
+                          (s) => s.toLowerCase().contains('shahbagh'),
+                        ),
+                      )
+                      .toList(),
+                ),
+                _buildAreaSection(
+                  context: context,
+
+                  title: "Kawran Bazar Routes",
+
+                  buses: routes
+                      .where(
+                        (e) => e.stops.any(
+                          (s) => s.toLowerCase().contains('kawran bazar'),
+                        ),
+                      )
+                      .toList(),
+                ),
+                _buildAreaSection(
+                  context: context,
+
+                  title: "Farmgate Routes",
+
+                  buses: routes
+                      .where(
+                        (e) => e.stops.any(
+                          (s) => s.toLowerCase().contains('farmgate'),
+                        ),
+                      )
+                      .toList(),
+                ),
+                const SizedBox(height: 80),
               ],
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildTopSearchSection(
+    bool isDark,
+    BuildContext context,
+    double screenWidth,
+    HomeProvider homeProvider,
+  ) {
+    return Container(
+      width: double.infinity,
+
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: isDark
+              ? const [Color(0xFF16213E), Color(0xFF1F4068)]
+              : const [Color(0xFF304791), Color(0xFF516ECD)],
+        ),
+
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(24),
+
+          bottomRight: Radius.circular(24),
+        ),
+      ),
+
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+
+        child: Column(
+          children: [
+            Text(
+              context.localization.goToYourDestination,
+
+              style: const TextStyle(
+                fontSize: 24,
+
+                color: Colors.white,
+
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+
+            SizedBox(height: screenWidth * 0.06),
+
+            Row(
+              children: [
+                Expanded(
+                  child: _buildTextField(
+                    title: context.localization.from,
+
+                    hint: context.localization.currentLocation,
+
+                    controller: fromController,
+                  ),
+                ),
+
+                const SizedBox(width: 16),
+
+                Expanded(
+                  child: _buildTextField(
+                    title: context.localization.toDestination,
+
+                    hint: context.localization.destination,
+
+                    controller: toController,
+
+                    suffixIcon: Icons.location_on_outlined,
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 24),
+
+            SizedBox(
+              width: double.infinity,
+              height: 58,
+
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        homeProvider.searchRoute(
+                          fromController.text,
+                          toController.text,
+                        );
+                      },
+
+                      style: ElevatedButton.styleFrom(
+                        elevation: 8,
+
+                        backgroundColor: Colors.white,
+
+                        foregroundColor: const Color(0xFF304791),
+
+                        shadowColor: Colors.black26,
+
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 15,
+                        ),
+
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                      ),
+
+                      icon: Container(
+                        padding: const EdgeInsets.all(6),
+
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+
+                        child: const Icon(Icons.search_rounded, size: 22),
+                      ),
+
+                      label: Text(
+                        context.localization.search,
+
+                        style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.3,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.4),
+
+                      borderRadius: BorderRadius.circular(18),
+
+                      border: Border.all(color: Colors.white.withOpacity(0.3)),
+                    ),
+
+                    child: TextButton.icon(
+                      onPressed: () {
+                        fromController.clear();
+
+                        toController.clear();
+
+                        homeProvider.clearSearch();
+                      },
+
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 18,
+                          vertical: 15,
+                        ),
+
+                        foregroundColor: Colors.white,
+
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                      ),
+
+                      icon: const Icon(
+                        Icons.clear,
+                        size: 20,
+                        color: Colors.red,
+                      ),
+
+                      label: const Text(
+                        "Clear",
+
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -473,8 +637,8 @@ class _BusCard extends StatelessWidget {
                 ),
 
                 GestureDetector(
-                  onTap: () {
-                    favoriteProvider.toggleFavorite(bus);
+                  onTap: () async {
+                    await favoriteProvider.toggleFavorite(bus);
                   },
 
                   child: Icon(
