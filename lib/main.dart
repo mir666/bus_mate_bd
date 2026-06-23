@@ -8,6 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'data/models/bus_route_model.dart';
+import 'data/models/festival_model.dart';
 import 'data/models/stop_model.dart';
 import 'firebase_options.dart';
 
@@ -27,6 +28,13 @@ Future<void> main() async {
   await Hive.openBox<BusRouteModel>('busBox');
 
   await Hive.openBox<StopModel>('stops');
+
+
+  if (!Hive.isAdapterRegistered(0)) {
+    Hive.registerAdapter(FestivalAdapter());
+  }
+
+  await Hive.openBox<Festival>('festivalBox');
 
   await FMTCObjectBoxBackend().initialise();
 

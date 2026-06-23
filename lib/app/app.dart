@@ -6,6 +6,7 @@ import 'package:bus_mate_bd/features/common/presentation/providers/main_nav_cont
 import 'package:bus_mate_bd/features/favorite/providers/favorite_provider.dart';
 import 'package:bus_mate_bd/features/home/providers/home_provider.dart';
 import 'package:bus_mate_bd/features/map/providers/map_provider.dart';
+import 'package:bus_mate_bd/features/notification/providers/notification_provider.dart';
 import 'package:bus_mate_bd/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -35,6 +36,10 @@ class _BusMateBDState extends State<BusMateBD> {
         ),
         ChangeNotifierProvider(create: (_) => HomeProvider()..loadRoutes()),
         ChangeNotifierProvider(create: (_) => MapProvider()),
+        ChangeNotifierProvider(
+          create: (_) => NotificationProvider(),
+        ),
+
       ],
       child: Consumer<LanguageProvider>(
         builder: (context, languageProvider, child) {

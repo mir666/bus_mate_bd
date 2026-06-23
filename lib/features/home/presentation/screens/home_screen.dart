@@ -398,11 +398,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.4),
+                      color: Colors.white.withValues(alpha: 0.4),
 
                       borderRadius: BorderRadius.circular(18),
 
-                      border: Border.all(color: Colors.white.withOpacity(0.3)),
+                      border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
                     ),
 
                     child: TextButton.icon(

@@ -16,12 +16,20 @@ class HomeProvider extends ChangeNotifier {
 
   List<BusRouteModel> get searchResults => _searchResults;
 
+  /// SEARCH STATE
+
+  bool _isSearching = false;
+
+  bool get isSearching => _isSearching;
+
   /// LOADING
+
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
 
   /// LOAD BUS ROUTES
+
   Future<void> loadRoutes() async {
     try {
       _isLoading = true;
@@ -30,7 +38,6 @@ class HomeProvider extends ChangeNotifier {
 
       final box = Hive.box<BusRouteModel>('busBox');
 
-      /// IF HIVE EMPTY LOAD JSON
       if (box.isEmpty) {
         final jsonString = await rootBundle.loadString(
           'assets/data/routes.json',
@@ -47,9 +54,11 @@ class HomeProvider extends ChangeNotifier {
 
       _routes = box.values.toList();
 
-      _searchResults = _routes;
+      _searchResults = List.from(_routes);
+
+      _isSearching = false;
     } catch (e) {
-      debugPrint('Error loading routes: $e');
+      debugPrint("Load Error : $e");
     } finally {
       _isLoading = false;
 
@@ -57,12 +66,24 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
-  /// SEARCH ROUTE
+  /// TEXT NORMALIZE
+
+  String normalize(String text) {
+    return text.toLowerCase().trim().replaceAll(' ', '');
+  }
+
+  /// SMART SEARCH
+
   void searchRoute(String from, String to) {
-    final fromQuery = from.toLowerCase().trim();
-    final toQuery = to.toLowerCase().trim();
+    final fromQuery = normalize(from);
+
+    final toQuery = normalize(to);
+
+    /// EMPTY SEARCH
 
     if (fromQuery.isEmpty && toQuery.isEmpty) {
+      _isSearching = false;
+
       _searchResults = List.from(_routes);
 
       notifyListeners();
@@ -70,18 +91,22 @@ class HomeProvider extends ChangeNotifier {
       return;
     }
 
+    _isSearching = true;
+
     _searchResults = _routes.where((bus) {
-      final stops = bus.stops
-          .map((e) => e.toLowerCase())
-          .toList();
+      final stops = bus.stops.map(normalize).toList();
 
-      final fromIndex = stops.indexWhere(
-            (stop) => stop.contains(fromQuery),
-      );
+      final fromIndex = stops.indexWhere((stop) => stop.contains(fromQuery));
 
-      final toIndex = stops.indexWhere(
-            (stop) => stop.contains(toQuery),
-      );
+      final toIndex = stops.indexWhere((stop) => stop.contains(toQuery));
+
+      /// ONLY FROM SEARCH
+
+      if (fromQuery.isNotEmpty && toQuery.isEmpty) {
+        return fromIndex != -1;
+      }
+
+      /// FROM + TO SEARCH
 
       if (fromIndex == -1 || toIndex == -1) {
         return false;
@@ -93,13 +118,18 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// CLEAR SEARCH
+
   void clearSearch() {
+    _isSearching = false;
+
     _searchResults = List.from(_routes);
 
     notifyListeners();
   }
 
   /// FILTER BY AREA
+
   List<BusRouteModel> getRoutesByArea(String area) {
     return _routes.where((bus) {
       return bus.stops.any(
@@ -109,6 +139,7 @@ class HomeProvider extends ChangeNotifier {
   }
 
   /// REFRESH
+
   Future<void> refreshRoutes() async {
     await loadRoutes();
   }
